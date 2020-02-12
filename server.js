@@ -1,8 +1,8 @@
 const express = require('express')
-const app = exress()
+const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 5000
 const Account = ('./routes/account')
 
 app.use(bodyParser.json())
