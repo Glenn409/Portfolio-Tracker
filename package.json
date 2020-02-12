@@ -1,0 +1,30 @@
+{
+  "name": "portfolio-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Glenn409/Portfolio-Tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Glenn409/Portfolio-Tracker/issues"
+  },
+  "homepage": "https://github.com/Glenn409/Portfolio-Tracker#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.8",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
+    "nodemon": "^2.0.2",
+    "sequelize": "^5.21.4",
+    "sequelize-cli": "^5.5.1"
+  }
+}
