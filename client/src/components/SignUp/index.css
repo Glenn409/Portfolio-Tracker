@@ -3,7 +3,7 @@ h1 {
 }
 .signup-container{
     display:flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .signup-form{
     display:flex;
@@ -16,4 +16,12 @@ h1 {
 input,button {
     height:30px;
     width:200px;
+}
+
+.register-container{
+    width:400px;
+    border:2px solid black;
+}
+input {
+    float:right;
 }
