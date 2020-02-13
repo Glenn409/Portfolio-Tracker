@@ -1,11 +1,15 @@
-h1 {
-    text-align: center;
-}
+
 .signup-container{
+    background-color:grey;
+    position:fixed;
+    width:100%;
+    height:100%;
     display:flex;
     justify-content: space-between;
 }
 .signup-form{
+    width:100%;
+    padding-left:40px;
     display:flex;
     flex-direction: column;
 }
@@ -19,9 +23,39 @@ input,button {
 }
 
 .register-container{
-    width:400px;
+    background-color:white;
+    width:600px;
     border:2px solid black;
+    display:flex;
+    align-items: center;
+}
+.form-label {
+    color:#555;
+    font-size:20px;
+    line-height: 1.2;
 }
 input {
-    float:right;
+    width:300px;
+    border:none;
+    /* border-bottom: 2px solid #ccc; */
+}
+input:focus{
+    outline:none;
+}
+input:focus::placeholder{
+    color: transparent;
+}
+div .border-animation{
+    display:flex;
+    height:2px;
+    width:300px;
+    background-color:#ccc;
+    box-shadow: inset 0 0 0 0 #ccc;
+    transition: all ease .5s;
+}
+input:focus + .border-animation{
+    box-shadow: inset 300px 0 0 0 black;
+}
+.validation-container {
+    display:flex;
 }
