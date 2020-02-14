@@ -1,0 +1,20 @@
+A todo list to determine my next steps ->
+(we found out we can use seqeulize if we think harder)
+
+1. finish setup w/ passport+session
+2. login modal?
+3. show test information on login
+4. determine model/database outlay
+5. set up models. (transactions, coins?)
+
+    ->     ->     ->     ->     ->     ->     ->     ->     -> 
+1. set up a form for add coins
+2. find a way tos search coins
+3. set up buy coins on the navbar and add coins to database
+
+    ->     ->     ->     ->     ->     ->     ->     ->     -> 
+    ->           -lazy not dont think to hard work-         -> 
+ 
+ 1. find a picture for front page
+ 2. make a clean sign up ui
+ 3. make a clean login ui
