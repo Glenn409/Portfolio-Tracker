@@ -1,0 +1,12 @@
+.nav-container{
+    width:250px;
+    height:100%;
+    border-right: 2px solid black;
+}
+.nav-box{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height:100px;
+    border-bottom:1px solid black;
+}

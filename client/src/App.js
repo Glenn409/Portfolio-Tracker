@@ -8,9 +8,10 @@ import Dashboard from "./components/Dashboard"
 function App() {
   return (
     <Router>
-      <div>
+      <div className='container'>
         <Route exact path="/" component={SignUpPage} />
-        <Route exact path='/dashboard' component={Dashboard} />
+        <Route path='/dashboard' component={Dashboard}>
+        </Route>
       </div>
     </Router>
   );
