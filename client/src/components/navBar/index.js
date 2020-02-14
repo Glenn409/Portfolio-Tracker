@@ -6,21 +6,35 @@ function NavBar(){
         return(
             <div className='nav-container'>
                 
-                <div className='nav-box'>
-                    <Link to='/dashboard/portfolio'>Portfolio</Link>
-                </div>
-                <div className='nav-box'>
-                    <Link to='/dashboard/settings'>Settings</Link>
-                </div>
-                <div className='nav-box'>
-                    <p>Box3</p>
-                </div>
-                <div className='nav-box'>
-                    <p>Box4</p>
-                </div>
-                <div className='nav-box'>
-                    <p>Log Out</p>
-                </div>
+                <Link className='text-link' to='/dashboard/portfolio'>
+                    <div className='nav-box'>
+                        <h1>Portfolio</h1>
+                    </div>
+                </Link>
+
+                <Link className='text-link' to='/dashboard/settings'>
+                    <div className='nav-box'>
+                        <h1>Settings</h1>
+                    </div>
+                </Link>
+
+                <Link className='text-link' to=''>
+                    <div className='nav-box'>
+                        <h1>box3</h1>
+                    </div>
+                </Link>
+
+                <Link className='text-link' to=''>
+                    <div className='nav-box'>
+                        <h1>box4</h1>
+                    </div>
+                </Link>>
+
+                <Link className='text-link' to=''>
+                    <div className='nav-box'>
+                        <h1>Logout</h1>
+                    </div>
+                </Link>
             </div>
         )
 }

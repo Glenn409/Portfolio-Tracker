@@ -10,3 +10,10 @@
     height:100px;
     border-bottom:1px solid black;
 }
+.text-link {
+    color: inherit;
+    text-decoration: inherit;
+}
+.nav-box:hover{
+    background-color:grey;
+}
