@@ -27,5 +27,11 @@ module.exports = (sequelize,DataTypes) => {
     //     return bcrypt.compareSync(this.password, password);
     //   };
 
+    User.associate = (models) =>{
+        User.hasOne(models.Account, {
+            as:'userAccount',
+            foreignKey: 'userId'
+        })
+    }
     return User; 
 }
