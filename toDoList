@@ -18,3 +18,17 @@ A todo list to determine my next steps ->
  1. find a picture for front page
  2. make a clean sign up ui
  3. make a clean login ui
+
+
+ ------------------------------------------------------------------------------------------------
+                        stuff to do after main stuff is done (aka polishing)
+ ------------------------------------------------------------------------------------------------
+    1. setup validitors to check database each time you type on login to determine a valid username
+        - setup samething for password?
+        - use green/red outline animations
+
+    2. Fix/finish setting up the way errors are handled for login validators
+        - currently using "Passed"/"failed"
+        - change to true/fase and submit errors in an array and pass it into a div on fail login attempt
+    
+    3. condense axios (from components signup/login) posts into a js file for cleaner code

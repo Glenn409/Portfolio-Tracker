@@ -50,6 +50,7 @@
     padding-left:10px;
 }
 .login-button{
+    cursor:pointer;
     margin-top:10px;
     width:92%;
     border:none;

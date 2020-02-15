@@ -16,7 +16,7 @@ app.use (session({
     saveUninitialized: false
 }))
 
-require('./routes/account')(app)
+require('./routes/api')(app)
 
 let syncOptions = {force: false}
 
