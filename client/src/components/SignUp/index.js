@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import './index.css'
 import {checkName, checkEmail,checkPW, checkRepeatingPW} from '../../validationFunctions'
+import LoginModal from '../loginModal'
 
 class signUpPage extends React.Component{
     constructor(props){
@@ -122,12 +123,14 @@ class signUpPage extends React.Component{
                         </div>
 
                         <p className='error'>{this.state.emailError}</p>
-                        <div className='button-box'>
-                        <span className='border-animation'></span>
 
-                        <button className='signup-button' onClick={this.handleSubmit}>Sign Up</button>
-                        <button>Sign In</button>
-                    </div>
+                        <div className='button-box'>
+                            <span className='border-animation'></span>
+
+                            <button className='signup-button' onClick={this.handleSubmit}>Sign Up</button>
+                            <h2>already have an account?</h2>
+                            <LoginModal />
+                        </div>
                     </form>
                 </div>
     
