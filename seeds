@@ -1,0 +1,1 @@
+INSERT INTO transactions (transaction_type,coin, quantity,createdAt,updatedAt,UserId) VALUES ('buy','btc',20,NOW(),NOW(),1);

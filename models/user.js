@@ -1,6 +1,7 @@
 'use strict';
 const bcrypt = require('bcrypt')
 
+const Transaction = require('./transaction')
 module.exports = (sequelize, DataTypes) => {
     let User = sequelize.define('User', {
         id: { 
@@ -17,13 +18,5 @@ module.exports = (sequelize, DataTypes) => {
     })
 
     User.beforeCreate((user) => {user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null)})
-    
-    
-    User.associate = (models) =>{
-        User.hasOne(models.Transaction, {
-            as:'userAccount',
-            foreignKey: 'userId'
-        })
-    }
     return User; 
 }

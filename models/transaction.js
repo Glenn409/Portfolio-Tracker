@@ -1,11 +1,10 @@
 const User = require('./user')
 module.exports = (sequelize, DataTypes) => {
     var Transaction = sequelize.define("Transactions", {
-        transaction_id: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            defaultValue: DataTypes.UUIDV4,
-            allowNull: false
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true, 
+            primaryKey: true, 
         },
         transaction_type: {
             type: DataTypes.STRING,
@@ -20,8 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         underscore: true
     });
+
     Transaction.associate = (models) => {
-        Transaction.belongsTo(models.User {
+        Transaction.belongsTo(models.User, {
+            as: 'user_transactions',
             foreignKey: "userId"
         });
     }
