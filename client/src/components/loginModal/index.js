@@ -2,17 +2,8 @@ import React from 'react';
 import Modal from 'react-modal';
 import './index.css'
 import axios from 'axios'
+import { withRouter } from 'react-router-dom'
 
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
  
 Modal.setAppElement('#root')
  
@@ -50,14 +41,19 @@ class loginModal extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
+
     axios.post('/api/login', {
       email: this.state.email,
       password: this.state.password
     }).then(res => {
-      console.log(res)
-      if(res === false){
-        this.setState({error: 'Invalid Username'})
+      if(res.data.error){
+        console.log(res.data.error)
+      } else {
+        localStorage.setItem('userToken', res.data.accessToken)
+        this.props.history.push(`/dashboard/portfolio`)
       }
+    }).catch(err =>{
+      console.log(err)
     })
 
   }
@@ -74,15 +70,15 @@ class loginModal extends React.Component {
             <p className='modal-title'>User Login</p>
             <div className='login-input-box'>
                 <i className="material-icons" >email</i>
-                <input className='login-input' placeholder='Email' onChange={this.handleChange} name='email'></input>
+                <input className='login-input' placeholder='Email' value={this.state.email} onChange={this.handleChange} name='email'></input>
             </div>
 
               <div className='login-input-box'>
                 <i className='material-icons'>lock</i>
-                <input placeholder='Password' className='login-input' onChange={this.handleChange} name='password'></input>
+                <input placeholder='Password' className='login-input' value={this.state.password} onChange={this.handleChange} name='password'></input>
               </div>
 
-              <button className='login-button' onClick={this.handleSubmit}>Sign In</button>
+              <button onClick={this.handleSubmit} className='login-button'>Sign In</button>
               <p className='login-error'>{this.state.error}</p>
           </form>
           
@@ -92,4 +88,4 @@ class loginModal extends React.Component {
   }
 }
 
-export default loginModal
+export default withRouter(loginModal)

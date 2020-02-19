@@ -64,7 +64,6 @@ class signUpPage extends React.Component{
                 if(res.data.error){ 
                     this.setState({emailError: res.data.error})
                 }else {
-                        
                     this.setState({emailError: ''})
                 }
             }).catch(err =>{

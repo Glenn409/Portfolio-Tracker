@@ -13,10 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 
     User.beforeCreate((user) => {user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null)})
     
-    User.prototype.validPassword = function(password) {
-        return bcrypt.compareSync(this.password, password);
-    }
-
+    
     // User.associate = (models) =>{
     //     User.hasOne(models.Transaction, {
     //         as:'userAccount',

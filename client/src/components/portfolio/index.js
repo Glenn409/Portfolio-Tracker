@@ -1,10 +1,31 @@
 import React from 'react';
 import './index.css'
+import jwtDecode from 'jwt-decode'
 
-function Portfolio(){
+class Portfolio extends React.Component{
+    constructor(){
+        super();
+        this.state = {
+            email: ''
+        }
+    }
+
+    componentDidMount(){
+        const token = localStorage.userToken
+        const decoded = jwtDecode(token)
+        this.setState({
+            email:decoded.email
+        })
+    }
+    render(){
         return(
-            <h1>this is portfolio</h1>
+            <div>
+
+                <h1>this is portfolio</h1>
+                <h1>Email: {this.state.email}</h1>
+            </div>
         )
+    }
 }
 
 export default Portfolio;

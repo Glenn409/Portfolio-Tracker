@@ -1,34 +1,44 @@
 //file to help keep api router code clean and easy to look at.
+require('dotenv').config()
 const db = require('../models/')
+const jwt = require("jsonwebtoken")
+const bcrypt = require('bcrypt')
 
 module.exports = {
 
-     signUp: function(newUser){
+     signUp: function(newUser, cb){
        db.User.findOne({
            where: { email: newUser.email}
        }).then(user =>{
            if(user){
-               res.json({error: "Email is already in use!"})
+               cb({error: "Email is already in use!"})
            } else {
                db.User.create(newUser).then(db =>{
-                   res.json({success: 'created account'})
+                    cb({success: 'created account'})
                })
            }
        })
     },
 
-    login: function(user){
+    login: function(currentUser, cb){
         db.User.findOne({
-            where: {email: user.email}
+            where: {email: currentUser.email}
         }).then(user =>{
             if(!user){
-                console.log('failed')
-                return ({error: 'Invalid Username'})
+                cb({error: 'Invalid Username'})
+            } 
+            if(bcrypt.compareSync(currentUser.password, user.dataValues.password)){
+                const accessToken = jwt.sign(
+                    {email: user.email},
+                    process.env.ACCESS_TOKEN_SECRET,
+                    {expiresIn: 900}) 
+                cb({accessToken: accessToken})
             } else {
-                console.log('success')
+                cb({error: 'Invalid Password'})
             }
         })
     }
+    
     
 
 }
