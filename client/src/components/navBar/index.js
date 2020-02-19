@@ -1,8 +1,23 @@
 import React from 'react';
 import './index.css'
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 
-function NavBar(){
+
+class NavBar extends React.Component{
+    constructor(){
+        super();
+
+        this.logOut = this.logOut.bind(this)
+    }
+    logOut(e){
+        e.preventDefault()
+        console.log(localStorage)
+        localStorage.removeItem('userToken')
+        console.log(localStorage)
+        this.props.history.push('')
+    }
+
+    render(){
         return(
             <div className='nav-container'>
                 
@@ -31,12 +46,13 @@ function NavBar(){
                 </Link>>
 
                 <Link className='text-link' to=''>
-                    <div className='nav-box'>
+                    <div className='nav-box' onClick={this.logOut}>
                         <h1>Logout</h1>
                     </div>
                 </Link>
             </div>
         )
+    }
 }
 
-export default NavBar;
+export default withRouter(NavBar);

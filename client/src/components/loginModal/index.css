@@ -62,5 +62,21 @@
 .login-input-box .material-icons{
     color:grey;
 }
+.error-box{
+    border:1px solid red;
+}
+.error-icon-hide {
+    display:none;    
+}
+.error-msg {
+    margin-left:auto;
+    margin-right:auto;
+    width:92%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 3px 3px 3px 3px;
+    color: #D8000C;
+    background-color: #FFBABA;
+  }
 
     

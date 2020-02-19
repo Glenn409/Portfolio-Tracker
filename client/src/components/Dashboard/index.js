@@ -5,7 +5,7 @@ import './index.css'
 import NavBar from '../navBar'
 import Portfolio from '../portfolio'
 import Settings from '../Settings'
-
+import App from '../../App'
 function Dashboard(){
         return(
             <Router>
@@ -17,6 +17,9 @@ function Dashboard(){
                         </Route>
                         <Route path='/dashboard/settings'>    
                             <Settings />
+                        </Route>
+                        <Route path=''>
+                            <App />
                         </Route>
                     </Switch>
                 </div>

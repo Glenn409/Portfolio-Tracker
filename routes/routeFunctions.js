@@ -24,17 +24,20 @@ module.exports = {
         db.User.findOne({
             where: {email: currentUser.email}
         }).then(user =>{
-            if(!user){
+            console.log(user)
+            if(user === null){
                 cb({error: 'Invalid Username'})
-            } 
-            if(bcrypt.compareSync(currentUser.password, user.dataValues.password)){
-                const accessToken = jwt.sign(
-                    {email: user.email},
-                    process.env.ACCESS_TOKEN_SECRET,
-                    {expiresIn: 900}) 
-                cb({accessToken: accessToken})
-            } else {
-                cb({error: 'Invalid Password'})
+             } else {
+                if(bcrypt.compareSync(currentUser.password, user.dataValues.password)){
+                    const accessToken = jwt.sign(
+                        {email: user.email},
+                        process.env.ACCESS_TOKEN_SECRET
+                        // ,{expiresIn: 900}
+                        ) 
+                    cb({accessToken: accessToken})
+                } else {
+                    cb({error: 'Invalid Password'})
+                }
             }
         })
     }

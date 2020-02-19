@@ -15,7 +15,9 @@ class loginModal extends React.Component {
       modalIsOpen: false,
       email: '',
       password: '',
-      error: ''
+      loginError: '',
+      emailError: false,
+      passwordError: false
     };
  
     this.openModal = this.openModal.bind(this);
@@ -32,6 +34,7 @@ class loginModal extends React.Component {
   closeModal(e) {
     e.preventDefault()
     this.setState({modalIsOpen: false});
+    this.setState({loginError: ''})
   }
 
   handleChange(e){
@@ -41,23 +44,34 @@ class loginModal extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
+    //checks if user has put in login info else throws error
+    if(this.state.email === ''){
+      this.setState({emailError: true})
+    } else this.setState({emailError: false})
 
-    axios.post('/api/login', {
-      email: this.state.email,
-      password: this.state.password
-    }).then(res => {
-      if(res.data.error){
-        console.log(res.data.error)
-      } else {
-        localStorage.setItem('userToken', res.data.accessToken)
-        this.props.history.push(`/dashboard/portfolio`)
-      }
-    }).catch(err =>{
-      console.log(err)
-    })
+    if(this.state.password === ''){
+      this.setState({passwordError:true})
+    } else this.setState({passwordError:false})
 
+    //checks user submits something in login then runs login handling
+    if(this.state.password !== '' || this.state.email !== ''){
+      axios.post('/api/login', {
+        email: this.state.email,
+        password: this.state.password
+      }).then(res => {
+        if(res.data.error){
+          console.log('Recieved a error while logging in: ' + res.data.error)
+          this.setState({loginError: res.data.error})
+        } else {
+          localStorage.setItem('userToken', res.data.accessToken)
+          this.props.history.push(`/dashboard/portfolio`)
+        }
+      }).catch(err =>{
+        console.log(err)
+      })
+    }
   }
- 
+
   render() {
     return (
       <div>
@@ -67,19 +81,22 @@ class loginModal extends React.Component {
                 <i onClick={this.closeModal} className="material-icons close">close</i>
             </div>
           <form className='modal-form'>
+            
             <p className='modal-title'>User Login</p>
-            <div className='login-input-box'>
+            <div className={ this.state.emailError ? 'error-box login-input-box' : 'login-input-box'}>
                 <i className="material-icons" >email</i>
                 <input className='login-input' placeholder='Email' value={this.state.email} onChange={this.handleChange} name='email'></input>
+                <span className={this.state.emailError ? '' : 'error-icon-hide'}>&#10060;</span>
             </div>
 
-              <div className='login-input-box'>
+              <div className={this.state.passwordError ? ' error-box login-input-box' : 'login-input-box'}>
                 <i className='material-icons'>lock</i>
-                <input placeholder='Password' className='login-input' value={this.state.password} onChange={this.handleChange} name='password'></input>
+                <input placeholder='Password' className='login-input' onChange={this.handleChange} name='password'></input>
+                <span className={this.state.passwordError ? '' : 'error-icon-hide'}>&#10060;</span>
               </div>
 
               <button onClick={this.handleSubmit} className='login-button'>Sign In</button>
-              <p className='login-error'>{this.state.error}</p>
+              <p>{this.state.loginError}</p>
           </form>
           
         </Modal>

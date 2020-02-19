@@ -13,6 +13,7 @@ class Portfolio extends React.Component{
     componentDidMount(){
         const token = localStorage.userToken
         const decoded = jwtDecode(token)
+        console.log(decoded)
         this.setState({
             email:decoded.email
         })
