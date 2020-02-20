@@ -44,7 +44,7 @@ module.exports = {
     
     //returns a Users Portfolio, all transactions and the totals of those transactions
     getPortfolio: function(userID, cb){
-        db.transaction.findAll({
+        db.transaction.findAll({ 
             where: { UserId : userID} 
         }).then(res =>{
             let returnObj = {
@@ -52,7 +52,6 @@ module.exports = {
                 transactionList: []
             }
             for(let i = 0; i < res.length; i++){
-                console.log(res[i].dataValues.quantity)
                 if(!returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`]){
                     returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`] = 0;
                 }
@@ -95,6 +94,28 @@ module.exports = {
             })
             
         })
+    },
+
+    getPriceValues: function(obj,cb){
+        let returnArray = []
+        for(let prop in obj){
+            db.coin.findOne({
+                where: {symbol: prop.toUpperCase()}
+            }).then(res =>{
+                let priceData = {
+                    symbol: res.dataValues.symbol,
+                    name: res.dataValues.name,
+                    btcprice: res.dataValues.btcprice,
+                    usdprice: res.dataValues.usdprice,
+                    lastUpdate: res.dataValues.updatedAt
+                }
+                returnArray.push(priceData)
+                if(returnArray.length === Object.keys(obj).length){
+                    cb({dataArray: returnArray})
+                }
+            })
+        }
+
     }
 
   

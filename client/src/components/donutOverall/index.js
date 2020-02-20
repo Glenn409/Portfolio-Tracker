@@ -1,51 +1,60 @@
 import React from 'react'
 import {Pie, Doughnut} from 'react-chartjs-2';
-import axios from 'axios';
+import {fetchPrices} from '../fetchFunctions'
 
-const testData = {
-    labels: ['test','teatsdf'],
-    datasets: [{
-        label:'Overall Coins',
-        backgroundColor:['#c9de00'],
-        data: [30,30]
-    },
-]
-}
 
 class donutOverall extends React.Component{
     constructor(){
         super();
         this.state = {
+            loading:false,
+            graphInfo:{},
+            labels: [],
+            datasets: []
+    }
+}
+    componentDidMount(){
+        this.timer = setInterval(() =>{
+            if(this.props.data !== {}){
+                clearInterval(this.timer)
+                this.timer = null
+                fetchPrices(this.props.data).then(res =>{
+                    const data = res.prices.dataArray
+                    console.log(data)
+                    let stateObj = {
+                        Label: 'Coins',
+                        backgroundColor:['#29AB47','#F48024','#3C4146'],
+                        data: []
+                    }
+                    for(let i = 0; i < data.length; i++){
+                        this.state.labels.push(data[i].symbol)
+                        stateObj.data.push(parseInt(data[i].usdprice))
+                    }
+                    this.setState({datasets: [stateObj]})
+                })
+            }
+        },1000)
 
-        }
     }
-    componentWillMount(){
-        axios.post(`/api/getUSD`,
-        {
-            userPortfolio: this.props.data
-        }).then(res =>{
-            console.log(res)
-        })
+    updateGraphData(){
+
     }
-    
     render(){
-        console.log(this.props.data)
+        console.log(this.state.datasets)
+        const graphData = {
+            labels: this.state.labels,
+            datasets: this.state.datasets
+        }
+        console.log(graphData)
         return(
             <div>
-                <div>
-                {
-                Object.keys(this.props.data).map(function(key,index) {
-                    return <div key={index}> Key: {key} Value: {this.props.data[key]}</div>
-                }, this)
-                }
-                </div>
                 <Pie 
-                    data={testData}
+                    data={graphData}
                     options={{
                         title:{
                             display:true,
-                            text:'TESTING TEXT TITLE',
-                            fontSize:20
+                            text:'Portfolio Breakdown',
+                            fontSize:25
                         },
                         legend: {
                             display:true,
@@ -54,7 +63,7 @@ class donutOverall extends React.Component{
                     }}
                 />
                 
-                <Doughnut 
+                {/* <Doughnut 
                     data={testData}
                     options={{
                         title:{
@@ -67,7 +76,7 @@ class donutOverall extends React.Component{
                             position:'right'
                         }
                     }}
-                />
+                /> */}
             </div>
         )
     }

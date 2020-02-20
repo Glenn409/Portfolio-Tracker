@@ -1,8 +1,9 @@
 import axios from 'axios'
 
-export const getPortfolio = (userID) => {
-     axios.get(`/api/getPortfolio/${userID}`).then(res =>{
-        //  consolef.log(res.data.data)
-        // return (res.data.data)
+export const fetchPrices = (obj) => {
+     return axios.post(`/api/getPrices/`,{
+        userPortfolio: obj
+    }).then(res =>{
+        return ({prices:res.data})
     })
 }

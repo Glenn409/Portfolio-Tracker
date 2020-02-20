@@ -17,7 +17,7 @@ class Portfolio extends React.Component{
 
         for(let i = 0; i < (this.props.transactions).length;i++){
             Object.keys(this.props.transactions[i]).map(function(key,index) {
-                div.push(<div key={index}> Key: {key} Value: {this.props.transactions[i][key]}</div>)
+                div.push(<div> Key: {key} Value: {this.props.transactions[i][key]}</div>)
             }, this)
         }
         return div
@@ -28,7 +28,7 @@ class Portfolio extends React.Component{
             <div>
                 {
                 Object.keys(this.props.portfolio).map(function(key,index) {
-                    return <div key={index}> Key: {key} Value: {this.props.portfolio[key]}</div>
+                    return <div> Key: {key} Value: {this.props.portfolio[key]}</div>
                 }, this)
                 }
                 <h1></h1>

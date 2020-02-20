@@ -31,13 +31,14 @@ module.exports = app => {
 
     app.get('/api/getPortfolio/:id',(req,res) =>{
         routeTools.getPortfolio(req.params.id, function(data){
-            console.log(data)
             res.send(data)
         })
     })
 
-    app.post('/api/getUSD',(req,res)=>{
-        console.log(req.body.data)
+    app.post('/api/getPrices',(req,res)=>{
+        routeTools.getPriceValues(req.body.userPortfolio, function(data){
+            res.send(data)
+        })
     })
 
 }   
