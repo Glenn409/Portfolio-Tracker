@@ -6,32 +6,29 @@ import NavBar from '../navBar'
 import Portfolio from '../portfolio'
 import Settings from '../Settings'
 import App from '../../App'
-import axios from 'axios'
+import {fetchPortfolio} from '../fetchFunctions'
 
 class Dashboard extends React.Component{
     constructor(){
         super()
         this.state = {
-            userID: '',
-            portfolio: {},
-            transactions: []
+            userId: '',
+            portfolio: {}
         }
     }
     UNSAFE_componentWillMount(){
         const token = localStorage.userToken
         const decoded = jwtDecode(token)
-        this.setState({userID: decoded.userID})
+        this.setState({userId: decoded.userID})
 
     }
     componentDidMount(){
-        axios.get(`/api/getPortfolio/${this.state.userID}`).then(res =>{
-            this.setState({transactions: res.data.data.transactionList})
-            this.setState({portfolio: res.data.data.quantityOfEachCoin})
+        fetchPortfolio(this.state.userId).then(res =>{
+            this.setState({portfolio: res.data.portfolio})
         })
         
     }
     render(){
-        
         return(
             <Router>
                 <div className='container'>
@@ -39,8 +36,6 @@ class Dashboard extends React.Component{
                     <Switch>
                         <Route path='/dashboard/portfolio'>
                             <Portfolio 
-                                transactions={this.state.transactions}
-                                userId={this.state.userID}
                                 portfolio={this.state.portfolio}
                             />
                         </Route>

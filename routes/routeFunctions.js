@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt')
 const axios = require('axios')
 module.exports = {
 
+    //sign up function
      signUp: function(newUser, cb){
        db.User.findOne({
            where: { email: newUser.email}
@@ -21,6 +22,7 @@ module.exports = {
        })
     },
 
+    //login function
     login: function(currentUser, cb){
         db.User.findOne({
             where: {email: currentUser.email}
@@ -42,8 +44,8 @@ module.exports = {
         })
     },
     
-    //returns a Users Portfolio, all transactions and the totals of those transactions
-    getPortfolio: function(userID, cb){
+    //returns  all transactions and the totals of those transactions
+    transactionsAndQuantity: function(userID, cb){
         db.transaction.findAll({ 
             where: { UserId : userID} 
         }).then(res =>{
@@ -116,8 +118,49 @@ module.exports = {
             })
         }
 
-    }
+    },
+    //puts together the portfolio for react to access and display
+    getPortfolio: function(id,cb){
+        let coinInfo = []
+        let coins = {}
+        let transactionList = []
+        let dis = this //cant call getPriceValues unless giving this a variable
+        let usdValue = 0
+        let btcValue = 0
 
+        dis.transactionsAndQuantity(id, function(data){
+            coins.quantity = data.data.quantityOfEachCoin
+            transactionList = data.data.transactionList
+            dis.getPriceValues(coins.quantity,function(data){
+                coinInfo = data.dataArray
+                coins.coinInfo = coinInfo
+                coins.transactions = transactionList
+
+                const coinKeys = Object.keys(coins.quantity)
+                const quantity = Object.values(coins.quantity)
+
+                for(let i = 0; i < coinKeys.length;i++){
+                    for(let x = 0; x < coinInfo.length;x++){
+                        Object.keys(coinInfo[x]).map(function(key,index){
+                            if(coinKeys[i].toUpperCase() === coinInfo[x][key]){
+                                coinInfo[x].quantity = quantity[i]
+                                coinInfo[x].coinUSDBalance = quantity[i] * coinInfo[x][`usdprice`]
+                                usdValue += coinInfo[x].coinUSDBalance
+                                coinInfo[x].coinBTCBalance = quantity[i] * coinInfo[x][`btcprice`]
+                                btcValue += coinInfo[x].coinBTCBalance
+                            }
+                        })
+                    }
+                }
+                coins.balance = {
+                    usd: parseFloat(usdValue.toFixed(2)),
+                    btc: parseFloat(btcValue.toFixed(8))
+                }
+                cb({portfolio: coins})
+            })
+        })
+        
+    }
   
 
 }

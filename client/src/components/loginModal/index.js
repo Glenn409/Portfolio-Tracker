@@ -86,13 +86,13 @@ class loginModal extends React.Component {
             <div className={ this.state.emailError ? 'error-box login-input-box' : 'login-input-box'}>
                 <i className="material-icons" >email</i>
                 <input className='login-input' placeholder='Email' value={this.state.email} onChange={this.handleChange} name='email'></input>
-                <span className={this.state.emailError ? '' : 'error-icon-hide'}>&#10060;</span>
+                <span role='img' className={this.state.emailError ? '' : 'error-icon-hide'}>&#10060;</span>
             </div>
 
               <div className={this.state.passwordError ? ' error-box login-input-box' : 'login-input-box'}>
                 <i className='material-icons'>lock</i>
                 <input placeholder='Password' className='login-input' onChange={this.handleChange} name='password'></input>
-                <span className={this.state.passwordError ? '' : 'error-icon-hide'}>&#10060;</span>
+                <span  role ='img'className={this.state.passwordError ? '' : 'error-icon-hide'}>&#10060;</span>
               </div>
 
               <button onClick={this.handleSubmit} className='login-button'>Sign In</button>

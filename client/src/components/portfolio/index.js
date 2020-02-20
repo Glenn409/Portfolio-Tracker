@@ -1,44 +1,53 @@
 import React from 'react';
 import './index.css'
-import DonutOverall from '../donutOverall/index'
+import DonutGraph from '../donutGraph/index'
 
 
 class Portfolio extends React.Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
+            loading: true,
+            portfolio: {}
         }
     }
     componentDidMount(){
-        
+        this.timer = setInterval(() =>{
+            if(this.props.portfolio){
+                clearInterval(this.timer)
+                this.timer=null
+                this.setState({portfolio: this.props.portfolio}) 
+                this.setState({loading:false})
+            }
+        },75)
     }
-    createTransactionList(){
-        let div = []
 
-        for(let i = 0; i < (this.props.transactions).length;i++){
-            Object.keys(this.props.transactions[i]).map(function(key,index) {
-                div.push(<div> Key: {key} Value: {this.props.transactions[i][key]}</div>)
-            }, this)
-        }
-        return div
-    }
     render(){
-        
+        //change integers into money format
+        const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+        });
+
+        const portfolio = this.state.portfolio
+
+        let balance;
+        if(this.state.loading){
+            balance = <h1 className='loading'>Loading...</h1>
+         } else {
+              balance = <h1>Portfolio Balance: {formatter.format(portfolio.balance.usd)}</h1>
+         }
+
         return(
             <div>
-                {
+                {/* {
                 Object.keys(this.props.portfolio).map(function(key,index) {
                     return <div> Key: {key} Value: {this.props.portfolio[key]}</div>
                 }, this)
-                }
-                <h1></h1>
-                <h1>userID: {this.props.userId}</h1>
-                <h1>Transaction List</h1>
-                <div>
-                    {this.createTransactionList()}
-                </div>
-                <DonutOverall 
-                    data={this.props.portfolio}
+                } */}
+                {balance}
+                <DonutGraph
+                    data={portfolio}
                 />
             </div>
         )

@@ -29,8 +29,8 @@ module.exports = app => {
         })
     })
 
-    app.get('/api/getPortfolio/:id',(req,res) =>{
-        routeTools.getPortfolio(req.params.id, function(data){
+    app.post('/api/getPortfolio',(req,res) =>{
+        routeTools.getPortfolio(req.body.userPortfolio, function(data){
             res.send(data)
         })
     })
