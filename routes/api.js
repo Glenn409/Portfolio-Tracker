@@ -15,7 +15,6 @@ module.exports = app => {
             password: req.body.password
         }
         routeTools.login(user, function(data){
-            console.log(data)
             res.send(data)
         })
     })  
@@ -30,6 +29,15 @@ module.exports = app => {
         })
     })
 
+    app.get('/api/getPortfolio/:id',(req,res) =>{
+        routeTools.getPortfolio(req.params.id, function(data){
+            console.log(data)
+            res.send(data)
+        })
+    })
 
+    app.post('/api/getUSD',(req,res)=>{
+        console.log(req.body.data)
+    })
 
 }   

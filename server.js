@@ -6,7 +6,8 @@ const port = process.env.PORT || 3001
 const db = require('./models')
 const session = require('express-session')
 const app = express()
-
+const cron = require('node-cron')
+const routeTools = require('./routes/routeFunctions')
 
 app.use(bodyParser.json())
 app.use( bodyParser.urlencoded({extended: false}))
@@ -25,8 +26,15 @@ if(process.env.NODE_ENV === 'test'){
     syncOptions.force = true
 }
 
+let task = cron.schedule('*/5 * * * * ',() => {
+    console.log('RUNNING CRON JOB')
+    // routeTools.updatePrices()
+})
+
 db.sequelize.sync(syncOptions).then(function(){
     app.listen(port, function() {
     console.log(`Server now listening on PORT ${port}!`)
+    task.start()
+    routeTools.updatePrices()
   })
 })      

@@ -1,11 +1,11 @@
 A todo list to determine my next steps ->
 (we found out we can use seqeulize if we think harder)
 
-1. finish setup w/ passport+session
-2. login modal?
-3. show test information on login
-4. determine model/database outlay
-5. set up models. (transactions, coins?)
+- finish setup w/ passport+session
+- login modal?
+- show test information on login
+/ determine model/database outlay
+/ set up models. (transactions, coins?)
 
     ->     ->     ->     ->     ->     ->     ->     ->     -> 
 1. set up a form for add coins

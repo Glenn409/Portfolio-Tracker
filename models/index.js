@@ -35,10 +35,11 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.users = require('./user')(sequelize,Sequelize)
-db.transactions = require('./transaction')(sequelize,Sequelize)
+db.transaction = require('./transaction')(sequelize,Sequelize)
+db.coin = require('./coins')(sequelize,Sequelize)
 
-db.transactions.belongsTo(db.users)
-db.users.hasMany(db.transactions)
+db.transaction.belongsTo(db.users)
+db.users.hasMany(db.transaction)
 
 
 module.exports = db;

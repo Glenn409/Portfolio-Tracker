@@ -1,7 +1,6 @@
 'use strict';
 const bcrypt = require('bcrypt')
 
-const Transaction = require('./transaction')
 module.exports = (sequelize, DataTypes) => {
     let User = sequelize.define('User', {
         id: { 

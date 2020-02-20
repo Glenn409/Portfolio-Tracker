@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
 
     Transaction.associate = (models) => {
         Transaction.belongsTo(models.User, {
-            as: 'user_transactions',
             foreignKey: "userId"
         });
     }

@@ -1,29 +1,45 @@
 import React from 'react';
 import './index.css'
-import jwtDecode from 'jwt-decode'
+import DonutOverall from '../donutOverall/index'
+
 
 class Portfolio extends React.Component{
     constructor(){
         super();
         this.state = {
-            email: ''
         }
     }
-
     componentDidMount(){
-        const token = localStorage.userToken
-        const decoded = jwtDecode(token)
-        console.log(decoded)
-        this.setState({
-            email:decoded.email
-        })
+        
+    }
+    createTransactionList(){
+        let div = []
+
+        for(let i = 0; i < (this.props.transactions).length;i++){
+            Object.keys(this.props.transactions[i]).map(function(key,index) {
+                div.push(<div key={index}> Key: {key} Value: {this.props.transactions[i][key]}</div>)
+            }, this)
+        }
+        return div
     }
     render(){
+        
         return(
             <div>
-
-                <h1>this is portfolio</h1>
-                <h1>Email: {this.state.email}</h1>
+                {
+                Object.keys(this.props.portfolio).map(function(key,index) {
+                    return <div key={index}> Key: {key} Value: {this.props.portfolio[key]}</div>
+                }, this)
+                }
+                <h1></h1>
+                <h1>userID: {this.props.userId}</h1>
+                <h1>Transaction List</h1>
+                <div>
+                    {this.createTransactionList()}
+                </div>
+                <DonutOverall 
+                    data={this.props.portfolio}
+                />
             </div>
         )
     }
