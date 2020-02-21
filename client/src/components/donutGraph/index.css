@@ -1,5 +1,4 @@
 .portfolio-card{
-    background-color:white;
-    box-shadow: 3px 3px #333;
-    margin-left: 20px;
+    color:white;
+    width:400px;
 }

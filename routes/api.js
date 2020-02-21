@@ -3,12 +3,7 @@ const routeTools = require('./routeFunctions')
 const jwt = require("jsonwebtoken")
 
 module.exports = app => {
-    //used to show the current express-session, helps with debugging passport
-    // app.use((req,res,next)=>{
-    //     console.log('req.session: ',req.session)
-    //     return next()
-    // })
-
+    //login
     app.post("/api/login", (req,res)=>{
         let user = {
             email:req.body.email,
@@ -18,7 +13,7 @@ module.exports = app => {
             res.send(data)
         })
     })  
-
+    //signup
     app.post("/api/signup",(req,res) =>{
         const newUser = {
             email: req.body.email,
@@ -28,17 +23,28 @@ module.exports = app => {
             console.log(data)
         })
     })
-
+    //a route to retrieve the users portfolio/data
     app.post('/api/getPortfolio',(req,res) =>{
         routeTools.getPortfolio(req.body.userPortfolio, function(data){
+            routeTools.getHistoricalData(data, function(historicalData){
             res.send(data)
+            })
+             // ({portfolioData:data,
         })
     })
-
+    //post to update database coin prices
     app.post('/api/getPrices',(req,res)=>{
         routeTools.getPriceValues(req.body.userPortfolio, function(data){
-            res.send(data)
-        })
-    })
+                res.send(data)
+            })
 
-}   
+        })
+    //post get historicalData of each Coin for  (req,res) =>    graph display
+        // app.post('/api/getHistoricalData', (req,res) => {   routeTools.getH
+        //     routeTools.getHistoricalData(req.body.id, function(data){
+        //         console.log(data)
+        //     })
+        // })
+    
+
+}  

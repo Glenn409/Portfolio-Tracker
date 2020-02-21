@@ -1,0 +1,21 @@
+.portfolio-container{
+    display:flex;
+    flex-direction: column;
+    width:90%;
+    margin-left:auto;
+    margin-right:auto;
+}
+.performance-graph-container{
+    width:92%;
+    background-color:rgb(122, 125, 153);
+    height:500px;
+    margin:20px;
+    margin-left:auto;
+    margin-right:auto;
+}
+.donut-graph-container{
+    width:400px;
+    background-color:rgb(122, 125, 153);
+    box-shadow: 3px 3px #333;
+    margin-left:auto;
+}

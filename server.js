@@ -25,7 +25,22 @@ let syncOptions = {force: false}
 if(process.env.NODE_ENV === 'test'){
     syncOptions.force = true
 }
-
+// function timeConverter(UNIX_timestamp){
+//     var a = new Date(UNIX_timestamp * 1000);
+//     var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+//     var year = a.getFullYear();
+//     var month = months[a.getMonth()];
+//     var date = a.getDate();
+//     var hour = a.getHours();
+//     var min = a.getMinutes();
+//     var sec = a.getSeconds();
+//     var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+//     return time;
+//   }
+//   console.log('date')
+//   console.log(timeConverter(1574380800));
+//   console.log(timeConverter(1574640000))
+//   console.log(timeConverter(1582243200))
 let task = cron.schedule('*/5 * * * * ',() => {
     console.log('RUNNING CRON JOB')
     // routeTools.updatePrices()

@@ -6,7 +6,7 @@ import NavBar from '../navBar'
 import Portfolio from '../portfolio'
 import Settings from '../Settings'
 import App from '../../App'
-import {fetchPortfolio} from '../fetchFunctions'
+import {fetchPortfolio,fetchHistoricalData} from '../fetchFunctions'
 
 class Dashboard extends React.Component{
     constructor(){
@@ -26,28 +26,39 @@ class Dashboard extends React.Component{
         fetchPortfolio(this.state.userId).then(res =>{
             this.setState({portfolio: res.data.portfolio})
         })
+        // fetchHistoricalData(this.state.userId).then(res =>{
+
+        // })
         
     }
     render(){
+        let havePortfolio = <p></p>;
+        if(!Object.keys(this.state.portfolio).length){
+            havePortfolio = <h2>NO CONTENTS IN PORTFOLIO</h2>
+        } else {
+            havePortfolio =<Router>
+                            <div className='container'>
+                                <NavBar />
+                                <Switch>
+                                    <Route path='/dashboard/portfolio'>
+                                        <Portfolio 
+                                            portfolio={this.state.portfolio}
+                                        />
+                                    </Route>
+                                    <Route path='/dashboard/settings'>    
+                                        <Settings />
+                                    </Route>
+                                    <Route path=''>
+                                        <App />
+                                    </Route>
+                                </Switch>
+                            </div>
+                        </Router>
+        }
         return(
-            <Router>
-                <div className='container'>
-                    <NavBar />
-                    <Switch>
-                        <Route path='/dashboard/portfolio'>
-                            <Portfolio 
-                                portfolio={this.state.portfolio}
-                            />
-                        </Route>
-                        <Route path='/dashboard/settings'>    
-                            <Settings />
-                        </Route>
-                        <Route path=''>
-                            <App />
-                        </Route>
-                    </Switch>
-                </div>
-            </Router>
+            <div>
+                {havePortfolio}
+            </div>
         )
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css'
 import DonutGraph from '../donutGraph/index'
-
+import PerformanceGraph from '../performanceGraph/index'
 
 class Portfolio extends React.Component{
     constructor(props){
@@ -37,18 +37,22 @@ class Portfolio extends React.Component{
          } else {
               balance = <h1>Portfolio Balance: {formatter.format(portfolio.balance.usd)}</h1>
          }
-
         return(
-            <div>
-                {/* {
-                Object.keys(this.props.portfolio).map(function(key,index) {
-                    return <div> Key: {key} Value: {this.props.portfolio[key]}</div>
-                }, this)
-                } */}
+            <div className='portfolio-container'>
+ 
                 {balance}
-                <DonutGraph
-                    data={portfolio}
-                />
+                {/* <div className='performance-graph-container'> */}
+                    <PerformanceGraph 
+                        data={portfolio}
+                    />
+
+                {/* </div> */}
+
+                <div className='donut-graph-container'>
+                    <DonutGraph
+                        data={portfolio}
+                    />
+                </div>
             </div>
         )
     }

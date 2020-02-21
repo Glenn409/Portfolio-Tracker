@@ -1,7 +1,6 @@
 //file to help keep api router code clean and easy to look at.
 require('dotenv').config()
 const db = require('../models/')
-const Transaction = require('../models/transaction')
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt')
 const axios = require('axios')
@@ -49,19 +48,24 @@ module.exports = {
         db.transaction.findAll({ 
             where: { UserId : userID} 
         }).then(res =>{
-            let returnObj = {
-                quantityOfEachCoin: {},
-                transactionList: []
-            }
-            for(let i = 0; i < res.length; i++){
-                if(!returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`]){
-                    returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`] = 0;
+            if(res === {}){
+                cb({data: false})
+            } else {
+                let returnObj = {
+                    quantityOfEachCoin: {},
+                    transactionList: []
                 }
-                returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`] += parseInt(res[i].dataValues.quantity)
-                
-                returnObj.transactionList.push(res[i].dataValues)
+                for(let i = 0; i < res.length; i++){
+                    if(!returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`]){
+                        returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`] = 0;
+                    }
+                    returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`] += parseInt(res[i].dataValues.quantity)
+                    
+                    returnObj.transactionList.push(res[i].dataValues)
+                }
+                cb({data:returnObj})
+
             }
-            cb({data:returnObj})
         })
     },
 
@@ -138,7 +142,6 @@ module.exports = {
 
                 const coinKeys = Object.keys(coins.quantity)
                 const quantity = Object.values(coins.quantity)
-
                 for(let i = 0; i < coinKeys.length;i++){
                     for(let x = 0; x < coinInfo.length;x++){
                         Object.keys(coinInfo[x]).map(function(key,index){
@@ -160,6 +163,18 @@ module.exports = {
             })
         })
         
+    },
+
+    getHistoricalData(obj,cb){
+        let url = 'https://min-api.cryptocompare.com/data/v2/histoday?fsym='
+        let coin = ''
+        let params =`&tsym=USD&limit=365&api_key=${process.env.CRYPTO_APIKEY}`
+        let query = url+coin+params
+        
+        console.log(obj)
+        const userCoins = Object.keys(obj.portfolio.quantity)
+        console.log(userCoins)
+        cb({success:true})
     }
   
 

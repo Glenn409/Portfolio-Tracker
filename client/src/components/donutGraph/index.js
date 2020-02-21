@@ -30,6 +30,7 @@ class donutGraph extends React.Component{
                 let data = []
                 let labels = []
                 let obj = {}
+                console.log(portfolio)
                 for(let i = 0; i < portfolio.coinInfo.length; i++){
                     graphData.labels.push(portfolio.coinInfo[i][`name`])
                     let num = parseFloat(portfolio.coinInfo[i][`coinUSDBalance`].toFixed(2))
@@ -59,7 +60,8 @@ class donutGraph extends React.Component{
                         title:{
                             display:true,
                             text:'Portfolio Breakdown',
-                            fontSize:25
+                            fontSize:25,
+                            fontColor: '#333'
                         },
                         legend: {
                             display:true,

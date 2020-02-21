@@ -1,0 +1,9 @@
+.performgraph {
+    display:relative;
+    width:92%;
+    background-color:rgb(122, 125, 153);
+    height:450px;
+    margin:20px;
+    margin-left:auto;
+    margin-right:auto;
+}
