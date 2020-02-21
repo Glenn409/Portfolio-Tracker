@@ -26,12 +26,13 @@ module.exports = app => {
     //a route to retrieve the users portfolio/data
     app.post('/api/getPortfolio',(req,res) =>{
         routeTools.getPortfolio(req.body.userPortfolio, function(data){
-            routeTools.getHistoricalData(data, function(historicalData){
-            res.send(data)
+             routeTools.getHistoricalData(data, function(historicalData){
+                    res.json({
+                        data:data
+                    })
+                })
             })
-             // ({portfolioData:data,
         })
-    })
     //post to update database coin prices
     app.post('/api/getPrices',(req,res)=>{
         routeTools.getPriceValues(req.body.userPortfolio, function(data){

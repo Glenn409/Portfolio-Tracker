@@ -28,7 +28,7 @@ class Portfolio extends React.Component{
                 style: 'currency',
                 currency: 'USD',
         });
-
+        console.log(this.props)
         const portfolio = this.state.portfolio
 
         let balance;
@@ -43,7 +43,8 @@ class Portfolio extends React.Component{
                 {balance}
                 {/* <div className='performance-graph-container'> */}
                     <PerformanceGraph 
-                        data={portfolio}
+                        portfolio={portfolio}
+                        historicalData={this.props.historicalData}
                     />
 
                 {/* </div> */}

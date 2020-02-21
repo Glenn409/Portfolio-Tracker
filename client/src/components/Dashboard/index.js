@@ -13,7 +13,8 @@ class Dashboard extends React.Component{
         super()
         this.state = {
             userId: '',
-            portfolio: {}
+            portfolio: {},
+            historicalData: {}
         }
     }
     UNSAFE_componentWillMount(){
@@ -24,14 +25,13 @@ class Dashboard extends React.Component{
     }
     componentDidMount(){
         fetchPortfolio(this.state.userId).then(res =>{
-            this.setState({portfolio: res.data.portfolio})
+            this.setState({portfolio: res.data.data.portfolio})
+            this.setState({historicalData: res.data.data.historicalData})
         })
-        // fetchHistoricalData(this.state.userId).then(res =>{
-
-        // })
         
     }
     render(){
+        // console.log(this.state)
         let havePortfolio = <p></p>;
         if(!Object.keys(this.state.portfolio).length){
             havePortfolio = <h2>NO CONTENTS IN PORTFOLIO</h2>
@@ -43,6 +43,7 @@ class Dashboard extends React.Component{
                                     <Route path='/dashboard/portfolio'>
                                         <Portfolio 
                                             portfolio={this.state.portfolio}
+                                            historicalData={this.state.historicalData}
                                         />
                                     </Route>
                                     <Route path='/dashboard/settings'>    

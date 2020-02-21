@@ -18,8 +18,7 @@ class donutGraph extends React.Component{
     componentDidMount(){
         this.timer = setInterval(() =>{
             if(this.props.data !== {}){
-                console.log('---')
-                console.log(this.props.data)
+
                 clearInterval(this.timer)
                 this.timer = null
                 this.setState({portfolio: this.props.data}) 
@@ -30,7 +29,7 @@ class donutGraph extends React.Component{
                 let data = []
                 let labels = []
                 let obj = {}
-                console.log(portfolio)
+
                 for(let i = 0; i < portfolio.coinInfo.length; i++){
                     graphData.labels.push(portfolio.coinInfo[i][`name`])
                     let num = parseFloat(portfolio.coinInfo[i][`coinUSDBalance`].toFixed(2))

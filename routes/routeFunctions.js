@@ -165,17 +165,48 @@ module.exports = {
         
     },
 
-    getHistoricalData(obj,cb){
+    async getHistoricalData(obj,cb){
         let url = 'https://min-api.cryptocompare.com/data/v2/histoday?fsym='
         let coin = ''
         let params =`&tsym=USD&limit=365&api_key=${process.env.CRYPTO_APIKEY}`
-        let query = url+coin+params
-        
-        console.log(obj)
-        const userCoins = Object.keys(obj.portfolio.quantity)
-        console.log(userCoins)
-        cb({success:true})
-    }
-  
+        let returnObj = obj
+        let coinList = []
+        let queryList = []
+        returnObj.historicalData = {}
 
+        const userCoins = Object.keys(obj.portfolio.quantity)
+        for(let i = 0; i < userCoins.length; i++){
+            coin = userCoins[i].toUpperCase()
+            let query = url+coin+params
+            coinList.push(coin)
+            queryList.push(query)
+        }  
+
+        let dataArray = []
+        for(let i = 0; i < queryList.length;i++){
+            dataArray.push(this.getData(queryList[i]))
+        }
+        Promise.all(dataArray).then(() =>{
+            for(let i = 0; i < dataArray.length; i++){
+                returnObj.historicalData[coinList[i]] = []
+                // returnObj.historicalData[coinList[i]].push(dataArray[i])
+                Promise.resolve(dataArray[i]).then(res =>{
+                    returnObj.historicalData[coinList[i]] = res
+                })
+            }
+ 
+        })
+        .then(() =>{
+            cb({data: returnObj})
+        })
+    
+    },
+    
+    getData(url){
+        return new Promise ((resolve, reject) => {
+            axios.get(url).then(res =>{
+                resolve(res.data.Data.Data)
+            })
+        })
+    }
 }
