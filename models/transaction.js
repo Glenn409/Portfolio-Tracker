@@ -16,11 +16,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DECIMAL(10, 2)
         },
         purchaseDate: {
-            type: DataTypes.STRING,
+            type: DataTypes.BIGINT,
             allowNull: true
         },
         sellDate: {
-            type:DataTypes.STRING,
+            type:DataTypes.BIGINT,
             allowNull: true
         }
 

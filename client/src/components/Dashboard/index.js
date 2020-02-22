@@ -31,7 +31,7 @@ class Dashboard extends React.Component{
         
     }
     render(){
-        // console.log(this.state)
+        console.log(this.state)
         let havePortfolio = <p></p>;
         if(!Object.keys(this.state.portfolio).length){
             havePortfolio = <h2>NO CONTENTS IN PORTFOLIO</h2>

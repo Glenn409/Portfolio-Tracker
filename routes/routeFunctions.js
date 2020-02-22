@@ -4,6 +4,7 @@ const db = require('../models/')
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt')
 const axios = require('axios')
+const moment = require('moment')
 module.exports = {
 
     //sign up function
@@ -59,8 +60,8 @@ module.exports = {
                     if(!returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`]){
                         returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`] = 0;
                     }
-                    returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`] += parseInt(res[i].dataValues.quantity)
-                    
+                    returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`] += parseFloat(res[i].dataValues.quantity)
+                    console.log(returnObj.transactionList)
                     returnObj.transactionList.push(res[i].dataValues)
                 }
                 cb({data:returnObj})
@@ -168,7 +169,8 @@ module.exports = {
     async getHistoricalData(obj,cb){
         let url = 'https://min-api.cryptocompare.com/data/v2/histoday?fsym='
         let coin = ''
-        let params =`&tsym=USD&limit=365&api_key=${process.env.CRYPTO_APIKEY}`
+        let params1 =`&tsym=USD&limit=`
+        let params2 = `&api_key=${process.env.CRYPTO_APIKEY}`
         let returnObj = obj
         let coinList = []
         let queryList = []
@@ -177,24 +179,39 @@ module.exports = {
         const userCoins = Object.keys(obj.portfolio.quantity)
         for(let i = 0; i < userCoins.length; i++){
             coin = userCoins[i].toUpperCase()
-            let query = url+coin+params
             coinList.push(coin)
-            queryList.push(query)
-        }  
+        }
+        
+        for(let x = 0; x < coinList.length; x++){
+            let transactionList = []
+            for (let i = 0; i < obj.portfolio.transactions.length; i++){
+                if(coinList[x].toUpperCase() === obj.portfolio.transactions[i].coin.toUpperCase()){
+                    if (obj.portfolio.transactions[i].purchaseDate === null){
+                        transactionList.push(moment(obj.portfolio.transactions[i].sellDate, 'X'))
+                    } else {
+                        transactionList.push(moment(obj.portfolio.transactions[i].purchaseDate, 'X'))
+                    }
 
+                }
+            }
+            let farthestDate = moment.min(transactionList)
+            let day = moment().diff(farthestDate,'days')
+            let query = url+coin+params1+day+params2
+            queryList.push(query)
+        }
         let dataArray = []
         for(let i = 0; i < queryList.length;i++){
             dataArray.push(this.getData(queryList[i]))
         }
+
         Promise.all(dataArray).then(() =>{
             for(let i = 0; i < dataArray.length; i++){
                 returnObj.historicalData[coinList[i]] = []
-                // returnObj.historicalData[coinList[i]].push(dataArray[i])
                 Promise.resolve(dataArray[i]).then(res =>{
                     returnObj.historicalData[coinList[i]] = res
                 })
             }
- 
+    
         })
         .then(() =>{
             cb({data: returnObj})
@@ -210,3 +227,15 @@ module.exports = {
         })
     }
 }
+
+
+// for (let i = 0; i < obj.portfolio.transactions.length; i++){
+//     if (obj.portfolio.transactions[i].purchaseDate === null){
+//         transactionList.push(moment(obj.portfolio.transactions[i].sellDate, 'X'))
+//     } else {
+//         transactionList.push(moment(obj.portfolio.transactions[i].purchaseDate, 'X'))
+//     }
+// }
+
+// let farthestDate = moment.min(transactionList)
+// let days = moment().diff(farthestDate,'days')

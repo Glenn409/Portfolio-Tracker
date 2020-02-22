@@ -28,11 +28,33 @@ class performanceGraph extends React.Component {
         super()
         this.state = {
             loading:true,
-            portfolio: {}
+            portfolio: {},
+            graphData: {
+
+            }
         }
     }
+
+    componentDidMount(){
+      this.timer = setInterval(() =>{
+        if(this.props.portfolio !== {} && this.props.historicalData !== {}){
+          clearInterval(this.timer)
+          this.timer = null
+          this.setState({portfolio: this.props.portfolio})
+          const transactions = this.state.portfolio 
+          console.log(transactions.transactions)
+
+          // for(let i = 0; i < historicalData.length; i++){
+          //   console.log(historicalData[i])
+          // }
+
+          
+        }
+      },100)
+    }
+
     render() {
-      // console.log(this.props)
+      console.log(this.state)
       return (
         <div className='performgraph'>
           <Line

@@ -28,7 +28,7 @@ class Portfolio extends React.Component{
                 style: 'currency',
                 currency: 'USD',
         });
-        console.log(this.props)
+        // console.log(this.props)
         const portfolio = this.state.portfolio
 
         let balance;
