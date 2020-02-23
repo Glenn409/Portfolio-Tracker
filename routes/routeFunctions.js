@@ -196,9 +196,7 @@ module.exports = {
             }
             let farthestDate = moment.min(transactionList)
             let day = moment().diff(farthestDate,'days')
-            console.log(day)
             let query = url+coin+params1+day+params2
-            console.log(query)
             queryList.push(query)
         }
         let dataArray = []
