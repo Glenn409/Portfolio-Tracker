@@ -1,0 +1,19 @@
+.coinList-container{
+    width:100%;
+}
+.coinList-headers{
+    display:flex;
+    font-size:20px;
+    font: weight 400;
+    align-items: center;
+    justify-content: left;
+    padding-left:5px;
+    border-bottom:1px solid black;    
+}
+.coinList-headers p {
+    font-weight:900;
+    width:15%;
+    padding-left: 10px;
+    padding-right:10px;
+    border-right:1px solid black;
+}

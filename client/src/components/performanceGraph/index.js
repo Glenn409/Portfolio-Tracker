@@ -184,7 +184,7 @@ class performanceGraph extends React.Component {
       // console.log('-------')
       return (
         <div className='performgraph'>
-          <Line
+          <Line className ='test'
             data={this.state.graphData}
             options={{
                 

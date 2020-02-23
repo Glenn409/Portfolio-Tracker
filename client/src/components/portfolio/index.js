@@ -2,7 +2,7 @@ import React from 'react';
 import './index.css'
 import DonutGraph from '../donutGraph/index'
 import PerformanceGraph from '../performanceGraph/index'
-
+import Coinlist from '../coinlist/index'
 class Portfolio extends React.Component{
     constructor(props){
         super(props);
@@ -28,7 +28,7 @@ class Portfolio extends React.Component{
                 style: 'currency',
                 currency: 'USD',
         });
-        // console.log(this.props)
+
         const portfolio = this.state.portfolio
 
         let balance;
@@ -39,20 +39,40 @@ class Portfolio extends React.Component{
          }
         return(
             <div className='portfolio-container'>
- 
-                {balance}
-                {/* <div className='performance-graph-container'> */}
+                {/* {balance} */}
+                <div className='card'>
                     <PerformanceGraph 
                         portfolio={portfolio}
                         historicalData={this.props.historicalData}
                     />
+                </div>
 
-                {/* </div> */}
+                <div class='second-row'>
+                    <div className='card stats'>
+                        <h1>Stats Card</h1>
+                    </div>
+                    <div className='donut-graph-container card'>
+                        <DonutGraph
+                            data={portfolio}
+                        />
+                    </div>
+                </div>
 
-                <div className='donut-graph-container'>
-                    <DonutGraph
-                        data={portfolio}
+                <div className='third-row card'>
+                    <Coinlist 
+                        portfoio={portfolio}
                     />
+                    {/* <div className='coinList-container'>
+                        <div className='coinList-headers'>
+                            <p className='name'>Name</p>
+                            <p className='price'>Price</p>
+                        </div>
+                    <Collapsible trigger="Start here">
+                        <p>This is the collapsible content. It can be any element or React component you like.</p>
+                        <p>It can even be another Collapsible component. Check out the next section!</p>
+                    </Collapsible>
+
+                    </div> */}
                 </div>
             </div>
         )
