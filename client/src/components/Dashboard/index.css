@@ -1,7 +1,10 @@
+*{
+    font-family: 'Source Sans Pro';
+}
 .container{
     position:fixed;
     height:100%;
     display:flex;
-    background-color:rgb(90, 92, 112);
+    background-color:#ddd;
     width:100%;
 }

@@ -54,8 +54,8 @@ class performanceGraph extends React.Component {
           this.setState({portfolio: this.props.portfolio})
           const transactions = this.state.portfolio.transactions
           // console.log(transactions)
-          this.createOverallBalance()
-          
+          // this.createOverallBalance()
+          // 
           // for(let i = 0; i < historicalData.length; i++){
           //   console.log(historicalData[i])
           // }

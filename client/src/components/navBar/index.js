@@ -6,48 +6,62 @@ import {Link, withRouter} from 'react-router-dom'
 class NavBar extends React.Component{
     constructor(){
         super();
-
+        this.state = {
+            activeIndex: 0
+        }
         this.logOut = this.logOut.bind(this)
+        this.changeActive = this.changeActive.bind(this)
     }
     logOut(e){
         e.preventDefault()
-        console.log(localStorage)
         localStorage.removeItem('userToken')
-        console.log(localStorage)
         this.props.history.push('')
     }
-
+    changeActive(index){
+        this.setState({
+            activeIndex:index
+        })
+    }
     render(){
+  
         return(
             <div className='nav-container'>
-                
+                <div className='title-box'>
+                    <i className="fa fa-pie-chart icon"></i>
+                    <p className= 'nav-title'>CryptoTracking</p>
+                </div>
                 <Link className='text-link' to='/dashboard/portfolio'>
-                    <div className='nav-box'>
-                        <h1>Portfolio</h1>
+                    <div className={this.state.activeIndex === 0 ? 'nav-box active' : 'nav-box'}  onClick={() => this.changeActive(0)}>
+                        <i className="fa fa-bar-chart-o icon"></i>
+                        <p>Portfolio</p>
+                    </div>
+                </Link>
+
+                <Link className='text-link' to=''>
+                    <div className={this.state.activeIndex === 1 ? 'nav-box active' : 'nav-box'}  onClick={() => this.changeActive(1)}>
+                    <i className="fa fa-tasks icon"></i>
+                        <p>Transactions</p>
                     </div>
                 </Link>
 
                 <Link className='text-link' to='/dashboard/settings'>
-                    <div className='nav-box'>
-                        <h1>Settings</h1>
+                    <div className={this.state.activeIndex === 2 ? 'nav-box active' : 'nav-box'}  onClick={() => this.changeActive(2)}>
+                        <i className="fa fa-cog icon"></i>
+                        <p>Settings</p>
                     </div>
                 </Link>
 
+{/* 
                 <Link className='text-link' to=''>
                     <div className='nav-box'>
-                        <h1>box3</h1>
+                        <p>box4</p>
                     </div>
-                </Link>
-
-                <Link className='text-link' to=''>
-                    <div className='nav-box'>
-                        <h1>box4</h1>
-                    </div>
-                </Link>>
+                </Link> */}
 
                 <Link className='text-link' to=''>
                     <div className='nav-box' onClick={this.logOut}>
-                        <h1>Logout</h1>
+                     <i className="fa fa-sign-out icon"></i>
+                        <p>Logout</p>
                     </div>
                 </Link>
             </div>

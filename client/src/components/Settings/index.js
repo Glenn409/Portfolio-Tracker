@@ -3,7 +3,10 @@ import './index.css'
 
 function Settings(){
     return (
-        <h1>settings tab</h1>
+        <div className='settings-container'>
+            <h1>settings tab</h1>
+
+        </div>
     )
 }
 
