@@ -2,22 +2,26 @@ import React from 'react'
 import {Line} from 'react-chartjs-2'
 import './index.css'
 import moment from 'moment'
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
-const state = {
-    labels: ['January', 'February', 'March',
-             'April', 'May'],
-    datasets: [
-      {
-        label: 'label',
-        fill: false,
-        lineTension: 0.5,
-        backgroundColor: 'rgba(75,192,192,1)',
-        borderColor: 'rgba(0,0,0,1)',
-        borderWidth: 2,
-        data: [65, 59, 80, 81, 56]
-      }
-    ]
-  }
+am4core.useTheme(am4themes_animated);
+// const state = {
+//     labels: ['January', 'February', 'March',
+//              'April', 'May'],
+//     datasets: [
+//       {
+//         label: 'label',
+//         fill: false,
+//         lineTension: 0.5,
+//         backgroundColor: 'rgba(75,192,192,1)',
+//         borderColor: 'rgba(0,0,0,1)',
+//         borderWidth: 2,
+//         data: [65, 59, 80, 81, 56]
+//       }
+//     ]
+//   }
   
   //we will go through each transaction a user has
   //we will get the coin, quantity of the coin, and the date and the price at that date
@@ -30,16 +34,17 @@ class performanceGraph extends React.Component {
             portfolio: {},
   
             graphData: {
-              labels: ['test'],
+              labels: [],
               datasets: [
-                      {
-                label: 'label',
-                fill: true,
-                lineTension: 0.5,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: [65, 59, 80, 81, 56]
+                {
+                  label: 'Cost Basis',
+                  fill: false,
+                  lineTension: 1,
+                  borderDash: [10,10],
+                  backgroundColor: 'rgba(75,192,192,1)',
+                  borderColor: 'black',
+                  borderWidth: 2,
+                  data: []
               }
             ]
             }
@@ -54,8 +59,64 @@ class performanceGraph extends React.Component {
           this.setState({portfolio: this.props.portfolio})
           const transactions = this.state.portfolio.transactions
           // console.log(transactions)
-          // this.createOverallBalance()
-          // 
+          this.createOverallBalance()
+          
+          let chart = am4core.create("chartdiv", am4charts.XYChart);  
+          chart.paddingRight = 10;
+
+          let data = [];
+          let test = 0;
+          for (let i = 0; i < this.state.graphData.labels.length; i++) {
+            test = Math.floor((Math.random() * 1000)+ 10000) 
+            data.push({ date: this.state.graphData.labels[i], value: this.state.graphData.datasets[0].data[i].toFixed(0),value2:test});
+          }
+          
+          chart.data = data;
+          
+          let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+          dateAxis.renderer.grid.template.location = 0;
+          dateAxis.renderer.grid.template.disabled = true;
+          dateAxis.minZoomCount = 5;
+          
+          
+          
+          // this makes the data to be grouped
+          dateAxis.groupData = true;
+          dateAxis.groupCount = 500;
+          
+          let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+          valueAxis.paddingRight = 10
+          valueAxis.fill= '#344052'
+          let series = chart.series.push(new am4charts.LineSeries());
+          series.dataFields.dateX = "date";
+          series.dataFields.valueY = "value";
+          series.tooltipText = "Cost Basis: ${valueY}";
+          series.strokeWidth = 2;
+          series.stroke='#FEBA4F'
+          series.strokeDasharray = '4'
+          series.tooltip.pointerOrientation = "vertical"
+          series.tooltip.getFillFromObject = false;
+          series.tooltip.background.fill= '#FEBA4F'
+          series.tooltip.background.fillOpacity = 1;
+          
+          let series2 = chart.series.push(new am4charts.LineSeries())
+          series2.dataFields.dateX = "date";
+          series2.dataFields.valueY = "value2";
+          series2.tooltipText = "Portfolio Balance: ${valueY}";
+          series2.tooltip.pointerOrientation = "vertical";
+          series2.tooltip.background.fillOpacity = 1;
+          series2.strokeWidth = 2;
+          series2.fillOpacity = 0.3;
+
+          // series2.axisFIll.fill = '#344052'
+
+          chart.cursor = new am4charts.XYCursor();
+          chart.cursor.xAxis = dateAxis;
+        
+          
+
+          chart.logo.height = -15;
+          this.chart = chart;
           // for(let i = 0; i < historicalData.length; i++){
           //   console.log(historicalData[i])
           // }
@@ -63,6 +124,11 @@ class performanceGraph extends React.Component {
           
         }
       },100)
+    }
+    componentWillUnmount(){
+      if (this.chart) {
+        this.chart.dispose();
+      }
     }
     //returns earliest date so we  can set up labels
     createOverallBalance() {
@@ -169,8 +235,16 @@ class performanceGraph extends React.Component {
         dataObj.date = time
 
         data.push(dataObj)
+
       })
-      console.log(data)
+      // consokle.log(data)
+      data.map(data =>{
+        // console.log(data)
+        this.state.graphData.labels.push(data.date)
+        this.state.graphData.datasets[0].data.push(data.costBasis)
+      })
+      this.setState({loading:false})
+      console.log(this.state)
       let currentDate = moment().format('MM-DD-YYYY')
       labels.push(currentDate)
 
@@ -182,7 +256,8 @@ class performanceGraph extends React.Component {
       // console.log('-------')
       return (
         <div className='performgraph'>
-          <Line className ='test'
+          <div id='chartdiv'></div>
+          {/* <Line className ='test'
             data={this.state.graphData}
             options={{
                 
@@ -211,7 +286,7 @@ class performanceGraph extends React.Component {
               responsive: true,
               maintainAspectRatio: false,
             }}
-          />
+          /> */}
         </div>
       );
     }
