@@ -3,6 +3,16 @@ import {Pie} from 'react-chartjs-2';
 import './index.css'
 import 'chart.piecelabel.js';
 
+let TestbackgroundColors = ['#F2626B','#FEBA4F','#FFEA7F', '#89E077','#83C3FF','#C381FD']
+let testHoverColors = ['#E30022','#FF8B00','#FEE72F','#03C03C','#1F75FE','#662B7E']
+let backgroundColors = []
+let hoverBackgroundColors = []
+for(let i = 0; i < (TestbackgroundColors.length)*5; i++){
+    backgroundColors.push(TestbackgroundColors[i])
+}
+for(let i = 0; i < (testHoverColors.length)*5; i++){
+    hoverBackgroundColors.push(testHoverColors[i])
+}
 
 class donutGraph extends React.Component{
     constructor(){
@@ -38,10 +48,8 @@ class donutGraph extends React.Component{
                     data.push(num)
                 }
                 obj.label = 'Portfolio'
-                obj.backgroundColor = [
-                    '#B21F00',
-                    '#C9DE00'
-                ]
+                obj.backgroundColor = backgroundColors
+                obj.hoverBackgroundColor = hoverBackgroundColors
                 obj.data = data
                 graphData.datasets.push(obj)
                 this.setState({loading:false})
@@ -52,12 +60,29 @@ class donutGraph extends React.Component{
     }
 
     render(){
-        
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+    });
         return(
             <div className={'portfolio-card'}>
-                <Pie 
+                <Pie
                     data={this.state.graphData}
                     options={{
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem,data){
+                                    let value = data.datasets[0].data[tooltipItem.index]
+                                    return data.labels[tooltipItem.index] + ": " + formatter.format(value)
+                                }
+
+                            }
+                        },
+                        responsive:true,
+                        maintainAspectRatio: false,
+                        slices:{
+                            2: {offsets:0.9}
+                        },
                         title:{
                             display:true,
                             text:'Portfolio Breakdown',
@@ -67,7 +92,7 @@ class donutGraph extends React.Component{
                         legend: {
                             display:true,
                             position:'right',
-                            fontSize:20,
+                            fontSize:18,
                         },
                         pieceLabel: {
                             render: 'percentage',
@@ -75,7 +100,7 @@ class donutGraph extends React.Component{
                             fontSize: 18,
                             showActualPercentages: true,
                             fontFamily:'Source Sans Pro',
-                            textMargin:2,
+                            textMargin:5,
                             segment:true,
                          },
                     }}
