@@ -1,26 +1,84 @@
 import React from 'react'
 import './index.css'
-import Collapsible from 'react-collapsible'
+// import Collapsible from 'react-collapsible'
+
 class Coinlist extends React.Component{
-    // super()
-    // this.state ={
-
-    // }
-
+    constructor(){
+        super()
+        this.state = {
+            coinlist: [],
+            loading: true
+        }
+    }
+    componentDidMount(){
+        this.timer = setInterval(() =>{
+            if(this.props.portfolio.coinInfo){
+                clearInterval(this.timer)
+                this.timer=null
+                this.props.portfolio.coinInfo.map(coin =>{  
+                    this.state.coinlist.push(coin)
+                })
+                this.setState({loading:false})
+            }
+        },75)
+    }
+    getDailyTickers(coin){
+            if(this.props.historicalData){
+                let previousNum =(this.props.historicalData[`${coin.symbol}`][this.props.historicalData[`${coin.symbol}`].length -2].close)
+                if(previousNum < coin.usdprice){
+                        let increase = coin.usdprice - previousNum 
+                        increase = (increase/previousNum) * 100
+                    return <p className='positive daily'>{`+ ${increase.toFixed(2)}%`}</p>
+                } else {
+                    let decrease = previousNum - coin.usdprice
+                    decrease = (decrease/previousNum) * 100
+                    return <p className='negative daily' >{`- ${decrease.toFixed(2)}%`}</p>
+                }
+            }
+    }
+    getWeekyTickers(coin){
+        if(this.props.historicalData){
+            let previousNum =(this.props.historicalData[`${coin.symbol}`][this.props.historicalData[`${coin.symbol}`].length - 8].close)
+            if(previousNum < coin.usdprice){
+                    let increase = coin.usdprice - previousNum 
+                    increase = (increase/previousNum) * 100
+                return <p className='positive weekly'>{`+ ${increase.toFixed(2)}%`}</p>
+            } else {
+                let decrease = previousNum - coin.usdprice
+                decrease = (decrease/previousNum) * 100
+                return <p className='negative weekly' >{`- ${decrease.toFixed(2)}%`}</p>
+            }
+        }
+    }
 
     render(){
-        console.log(this.props)
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+    });
+        let coinlist = this.state.coinlist
+
         return (
             <div className='coinList-container'>
-                <i class='cf cf-btc-atl'></i>
-                <i class="cf cf-btc"></i>
                 <div className='coinList-headers'>
-                    <p className='name'>Name</p>
-                    <p className='quantity'>Quantity</p>
-                    <p className='price'>Price</p>
-                    <p className='coin-value'>Market Value</p>
+                    <p className='header name'>Name</p>
+                    <p className='header quantity'>Quantity</p>
+                    <p className='header price'>Price</p>
+                    <p className='header coin-value'>Market Value</p>
+                    <p className='header daily'>Change (24h)</p>
+                    <p className='header weekly'>Change (7d)</p>
                 </div>
-                <div>
+                <div className='coinList-data'>
+                    {coinlist.map(coin =>{
+                       return  <div className='data-row'>
+                                 <p className='name'><img src={require(`../../../node_modules/cryptocurrency-icons/32/color/${coin.symbol.toLowerCase()}.png`)} />{coin.name}</p>
+                                 <p className='quantity'>{this.props.portfolio.quantity[`${coin.symbol.toLowerCase()}`]}</p>
+                                 <p className='price'>{formatter.format(coin.usdprice)}</p>
+                                 <p className='coin-value'>{formatter.format(coin.usdprice * this.props.portfolio.quantity[`${coin.symbol.toLowerCase()}`])}</p>
+                                      {this.getDailyTickers(coin)}
+                                      {this.getWeekyTickers(coin)}
+                                </div>
+                    })}
                     
                 </div>
         {/* <Collapsible trigger="Start here">

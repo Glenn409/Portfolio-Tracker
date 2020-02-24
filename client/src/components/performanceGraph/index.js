@@ -156,9 +156,7 @@ class performanceGraph extends React.Component {
           }
 
         })
-        // for (let [key,value] of Object.entries(balances)){
-        //   console.log(`${key}: ${value}`)
-        // }
+
         for (let [key, value] of Object.entries(quantity)) {
           newObj[`${key}`] = {
             quantity: value,

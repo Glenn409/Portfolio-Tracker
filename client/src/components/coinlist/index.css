@@ -2,6 +2,8 @@
     width:100%;
 }
 .coinList-headers{
+    background-color:#344052;
+    color:white;
     display:flex;
     font-size:20px;
     font: weight 400;
@@ -10,10 +12,39 @@
     padding-left:5px;
     border-bottom:1px solid black;    
 }
-.coinList-headers p {
+.coinList-headers p, .data-row p {
+    text-align: right;
     font-weight:900;
     width:15%;
     padding-left: 10px;
     padding-right:10px;
+    
+}
+.data-row{
+    font-size:18px;
+    display:flex;
+    align-items: center;
+    justify-content: left;
+    padding-left:5px;
+    border-bottom:1px solid black;    
+    border-bottom:1px solid black;
+}
+.name{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+}
+.name img {
+    width: 22px;
+    padding-right:5px;
+}
+.negative{
+    color:red;
+}
+.positive{
+    color:green;
+}
+.name, .quantity, .price, .coin-value, .daily {
     border-right:1px solid black;
 }

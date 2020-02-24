@@ -28,7 +28,7 @@ class Portfolio extends React.Component{
                 style: 'currency',
                 currency: 'USD',
         });
-
+        console.log(this.props)
         const portfolio = this.state.portfolio
 
         let balance;
@@ -47,7 +47,7 @@ class Portfolio extends React.Component{
                     />
                 </div>
 
-                <div class='second-row'>
+                <div className='second-row'>
                     <div className='card stats'>
                         <h1>Stats Card</h1>
                     </div>
@@ -60,7 +60,8 @@ class Portfolio extends React.Component{
 
                 <div className='third-row card'>
                     <Coinlist 
-                        portfoio={portfolio}
+                        portfolio={portfolio}
+                        historicalData={this.props.historicalData}
                     />
                     {/* <div className='coinList-container'>
                         <div className='coinList-headers'>
@@ -80,3 +81,4 @@ class Portfolio extends React.Component{
 }
 
 export default Portfolio;
+

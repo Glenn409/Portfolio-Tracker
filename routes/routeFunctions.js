@@ -61,7 +61,6 @@ module.exports = {
                         returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`] = 0;
                     }
                     returnObj.quantityOfEachCoin[`${res[i].dataValues.coin}`] += parseFloat(res[i].dataValues.quantity)
-                    console.log(returnObj.transactionList)
                     returnObj.transactionList.push(res[i].dataValues)
                 }
                 cb({data:returnObj})
@@ -124,6 +123,33 @@ module.exports = {
         }
 
     },
+
+    // getDailyPercents:function(coin,cb){
+    //     const rp = require('request-promise');
+    //     const requestOptions = {
+    //     method: 'GET',
+    //     uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest',
+    //     qs: {
+    //         'slug': `${coin.toLowerCase()}`
+    //     },
+    //     headers: {
+    //         'X-CMC_PRO_API_KEY': `${process.env.COIN_MARKETCAP_APIKEY}`
+    //     },
+    //     json: true,
+    //     gzip: true
+    //     };
+
+    //     rp(requestOptions).then(response => {
+    //     let obj = {}
+    //     for(key in response.data){
+    //         if(response.data.hasOwnProperty(key)){
+    //             obj.daily = response.data[key].quote.USD.percent_change_24h,
+    //             obj. weekly =response.data[key].quote.USD.percent_change_7d
+    //         }
+    //     }
+    //         cb({data:obj})
+    //     })
+    // },
     //puts together the portfolio for react to access and display
     getPortfolio: function(id,cb){
         let coinInfo = []
@@ -181,7 +207,6 @@ module.exports = {
             coin = userCoins[i].toUpperCase()
             coinList.push(coin)
         }
-        
         for(let x = 0; x < coinList.length; x++){
             let transactionList = []
             for (let i = 0; i < obj.portfolio.transactions.length; i++){
@@ -196,7 +221,7 @@ module.exports = {
             }
             let farthestDate = moment.min(transactionList)
             let day = moment().diff(farthestDate,'days')
-            let query = url+coin+params1+day+params2
+            let query = url+coinList[x]+params1+day+params2
             queryList.push(query)
         }
         let dataArray = []

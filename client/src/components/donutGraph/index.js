@@ -1,6 +1,7 @@
 import React from 'react'
 import {Pie} from 'react-chartjs-2';
 import './index.css'
+import 'chart.piecelabel.js';
 
 
 class donutGraph extends React.Component{
@@ -27,12 +28,13 @@ class donutGraph extends React.Component{
                 const portfolio = this.state.portfolio
                 const graphData = this.state.graphData
                 let data = []
-                let labels = []
+                // let labels = []
                 let obj = {}
+
 
                 for(let i = 0; i < portfolio.coinInfo.length; i++){
                     graphData.labels.push(portfolio.coinInfo[i][`name`])
-                    let num = parseFloat(portfolio.coinInfo[i][`coinUSDBalance`].toFixed(2))
+                    let num = (portfolio.coinInfo[i][`coinUSDBalance`].toFixed(2))
                     data.push(num)
                 }
                 obj.label = 'Portfolio'
@@ -64,8 +66,18 @@ class donutGraph extends React.Component{
                         },
                         legend: {
                             display:true,
-                            position:'right'
-                        }
+                            position:'right',
+                            fontSize:20,
+                        },
+                        pieceLabel: {
+                            render: 'percentage',
+                            position: 'outside',
+                            fontSize: 18,
+                            showActualPercentages: true,
+                            fontFamily:'Source Sans Pro',
+                            textMargin:2,
+                            segment:true,
+                         },
                     }}
                 />
 
