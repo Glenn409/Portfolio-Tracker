@@ -250,17 +250,27 @@ module.exports = {
                 resolve(res.data.Data.Data)
             })
         })
+    },
+    
+    getCoins(cb){
+        let returnArray = []
+        db.coin.findAll().then(res =>{
+            res.map(coin =>{
+                let obj = {
+                    symbol: coin.dataValues.symbol,
+                    name: coin.dataValues.name
+                }
+                returnArray.push(obj)
+            })
+            cb({data:returnArray})
+        })
+    },
+
+    createNewTransaction(obj,cb){
+        db.transaction.create(obj.transaction).then(
+            cb({success:'transaction created'})
+        )
     }
 }
 
 
-// for (let i = 0; i < obj.portfolio.transactions.length; i++){
-//     if (obj.portfolio.transactions[i].purchaseDate === null){
-//         transactionList.push(moment(obj.portfolio.transactions[i].sellDate, 'X'))
-//     } else {
-//         transactionList.push(moment(obj.portfolio.transactions[i].purchaseDate, 'X'))
-//     }
-// }
-
-// let farthestDate = moment.min(transactionList)
-// let days = moment().diff(farthestDate,'days')

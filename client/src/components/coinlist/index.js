@@ -24,6 +24,7 @@ class Coinlist extends React.Component{
     }
     getDailyTickers(coin){
             if(this.props.historicalData){
+                console.log(this.props.historicalData)
                 let previousNum =(this.props.historicalData[`${coin.symbol}`][this.props.historicalData[`${coin.symbol}`].length -2].close)
                 if(previousNum < coin.usdprice){
                         let increase = coin.usdprice - previousNum 

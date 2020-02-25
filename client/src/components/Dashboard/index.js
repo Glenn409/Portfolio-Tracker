@@ -7,7 +7,7 @@ import Portfolio from '../portfolio'
 import Settings from '../Settings'
 import Transactions from '../transactions'
 import App from '../../App'
-import {fetchPortfolio,fetchHistoricalData} from '../fetchFunctions'
+import {fetchPortfolio} from '../fetchFunctions'
 
 class Dashboard extends React.Component{
     constructor(){
@@ -17,6 +17,7 @@ class Dashboard extends React.Component{
             portfolio: {},
             historicalData: {}
         }
+        this.onTransactionChange = this.onTransactionChange.bind(this)
     }
     UNSAFE_componentWillMount(){
         const token = localStorage.userToken
@@ -29,8 +30,16 @@ class Dashboard extends React.Component{
             this.setState({portfolio: res.data.data.portfolio})
             this.setState({historicalData: res.data.data.historicalData})
         })
-        
     }
+    onTransactionChange(id){
+        fetchPortfolio(id).then(res =>{
+            console.log(res.data.data)
+            this.setState({portfolio: res.data.data.portfolio})
+            this.setState({historicalData: res.data.data.historicalData})
+            console.log(this.state)
+        })
+    }
+
     render(){
         // console.log(this.state)
         let havePortfolio = <p></p>;
@@ -51,7 +60,8 @@ class Dashboard extends React.Component{
                                         <Settings />
                                     </Route>
                                     <Route path='/dashboard/transactions'>    
-                                        <Transactions 
+                                        <Transactions transactionChange = {this.onTransactionChange}
+                                            userId={this.state.userId}
                                             portfolio={this.state.portfolio}
                                         />
                                     </Route>

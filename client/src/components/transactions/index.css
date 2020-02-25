@@ -36,6 +36,7 @@
     margin-right:auto;    
 }
 .first-row{
+    width:300px;
     display:flex;
     flex-direction: column;
     justify-content: center;
@@ -43,9 +44,9 @@
 }
 .first-row input{
     font-size:16px;
-    border-bottom:1px solid black;
 }
-.sub-title{
+.form-sub-title{
+    margin-bottom:10;
     font-size:20px;
     font-weight: 600;
 }

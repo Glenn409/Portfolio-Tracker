@@ -40,6 +40,16 @@ module.exports = app => {
             })
 
         })
+    app.get('/api/getCoins',(req,res) =>{
+        routeTools.getCoins(function(data){
+            res.send(data)
+        })
+    })
+    app.post('/api/createNewTransaction',(req,res) =>{
+        routeTools.createNewTransaction(req.body, function(data){
+            res.send(data)
+        })
+    })
     //post get historicalData of each Coin for  (req,res) =>    graph display
         // app.post('/api/getHistoricalData', (req,res) => {   routeTools.getH
         //     routeTools.getHistoricalData(req.body.id, function(data){
