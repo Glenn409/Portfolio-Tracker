@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
         coin:{
             type:DataTypes.STRING
         },
+        name:{
+            type:DataTypes.STRING
+        },
         quantity: {
             type: DataTypes.DECIMAL(10, 2)
         },

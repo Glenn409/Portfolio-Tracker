@@ -7,43 +7,18 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
 am4core.useTheme(am4themes_animated);
-// const state = {
-//     labels: ['January', 'February', 'March',
-//              'April', 'May'],
-//     datasets: [
-//       {
-//         label: 'label',
-//         fill: false,
-//         lineTension: 0.5,
-//         backgroundColor: 'rgba(75,192,192,1)',
-//         borderColor: 'rgba(0,0,0,1)',
-//         borderWidth: 2,
-//         data: [65, 59, 80, 81, 56]
-//       }
-//     ]
-//   }
-  
-  //we will go through each transaction a user has
-  //we will get the coin, quantity of the coin, and the date and the price at that date
-  //retrieve monthly prices of that coin store then send it to dashboard and pass it down for use
+
 class performanceGraph extends React.Component {
     constructor(){
         super()
         this.state = {
             loading:true,
             portfolio: {},
-  
+            dailyPortfolio: [],
             graphData: {
               labels: [],
               datasets: [
                 {
-                  label: 'Cost Basis',
-                  fill: false,
-                  lineTension: 1,
-                  borderDash: [10,10],
-                  backgroundColor: 'rgba(75,192,192,1)',
-                  borderColor: 'black',
-                  borderWidth: 2,
                   data: []
               }
             ]
@@ -53,24 +28,35 @@ class performanceGraph extends React.Component {
 
     componentDidMount(){
       this.timer = setInterval(() =>{
-        if(this.props.portfolio !== {} && this.props.historicalData !== {}){
+        if(this.props.portfolio.transactions !== {} && this.props.historicalData !== {}){
           clearInterval(this.timer)
           this.timer = null
           this.setState({portfolio: this.props.portfolio})
           const transactions = this.state.portfolio.transactions
-          // console.log(transactions)
+
           this.createOverallBalance()
           
           let chart = am4core.create("chartdiv", am4charts.XYChart);  
           chart.paddingRight = 10;
 
           let data = [];
-          let test = 0;
-          for (let i = 0; i < this.state.graphData.labels.length; i++) {
-            test = Math.floor((Math.random() * 1000)+ 10000) 
-            data.push({ date: this.state.graphData.labels[i], value: this.state.graphData.datasets[0].data[i].toFixed(0),value2:test});
+          //sets up porfolio balance in main graph
+          let arrayOfDailyBalance = [this.state.graphData.datasets[0].data[0]]
+          for(let i = 1; i < this.state.dailyPortfolio.length -1; i++){
+            const userCoins = Object.keys(this.state.dailyPortfolio[i].portfolio)
+            let balance = 0;
+
+            for(let x = 0; x < userCoins.length; x++){
+              balance += this.state.dailyPortfolio[i].portfolio[`${userCoins[x]}`].balance
+            }
+            arrayOfDailyBalance.push(balance)
           }
-          
+          arrayOfDailyBalance.push(this.state.portfolio.balance.usd)
+
+
+          for (let i = 0; i < this.state.graphData.labels.length; i++) {
+            data.push({ date: this.state.graphData.labels[i], value: this.state.graphData.datasets[0].data[i].toFixed(0),value2: arrayOfDailyBalance[i].toFixed(2)})
+          }
           chart.data = data;
           
           let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -78,9 +64,7 @@ class performanceGraph extends React.Component {
           dateAxis.renderer.grid.template.disabled = true;
           dateAxis.minZoomCount = 5;
           
-          
-          
-          // this makes the data to be grouped
+        
           dateAxis.groupData = true;
           dateAxis.groupCount = 500;
           
@@ -91,9 +75,11 @@ class performanceGraph extends React.Component {
           series.dataFields.dateX = "date";
           series.dataFields.valueY = "value";
           series.tooltipText = "Cost Basis: ${valueY}";
-          series.strokeWidth = 2;
+          series.strokeWidth = 3;
           series.stroke='#FEBA4F'
           series.strokeDasharray = '4'
+          series.tooltip.autoTextColor = false;
+          series.tooltip.label.fill = am4core.color("#000000");
           series.tooltip.pointerOrientation = "vertical"
           series.tooltip.getFillFromObject = false;
           series.tooltip.background.fill= '#FEBA4F'
@@ -108,22 +94,14 @@ class performanceGraph extends React.Component {
           series2.strokeWidth = 2;
           series2.fillOpacity = 0.3;
 
-          // series2.axisFIll.fill = '#344052'
-
           chart.cursor = new am4charts.XYCursor();
-          chart.cursor.xAxis = dateAxis;
-        
-          
+          chart.cursor.xAxis = dateAxis;        
 
-          chart.logo.height = -15;
+          chart.logo.height = -5000;
           this.chart = chart;
-          // for(let i = 0; i < historicalData.length; i++){
-          //   console.log(historicalData[i])
-          // }
-
           
         }
-      },100)
+      },200)
     }
     componentWillUnmount(){
       if (this.chart) {
@@ -133,7 +111,6 @@ class performanceGraph extends React.Component {
     //returns earliest date so we  can set up labels
     createOverallBalance() {
 
-      let labels = []
       let data = []
       const transactions = this.state.portfolio.transactions
       let dates = transactions.map(time => moment(time.purchaseDate))
@@ -146,7 +123,6 @@ class performanceGraph extends React.Component {
       } else {
         startingDate = farthestDate
       }
-      let count = 0;
       let timeFrame = []
 
       const coinList = Object.keys(this.props.historicalData)
@@ -188,7 +164,6 @@ class performanceGraph extends React.Component {
       timeFrame.map(time =>{
         let dataObj = {}
         let newObj = {}
-        let newBalance = {}
         transactions.map(transaction =>{
           if(time === moment.unix(transaction.purchaseDate).format('MM/DD/YYYY')){
             let coin = transaction.coin.toUpperCase()
@@ -237,17 +212,12 @@ class performanceGraph extends React.Component {
         data.push(dataObj)
 
       })
-      // consokle.log(data)
+      this.setState({dailyPortfolio: data})
       data.map(data =>{
-        // console.log(data)
         this.state.graphData.labels.push(data.date)
         this.state.graphData.datasets[0].data.push(data.costBasis)
       })
       this.setState({loading:false})
-      console.log(this.state)
-      let currentDate = moment().format('MM-DD-YYYY')
-      labels.push(currentDate)
-
     }
 
     render() {

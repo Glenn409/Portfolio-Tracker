@@ -28,11 +28,11 @@ class Coinlist extends React.Component{
                 if(previousNum < coin.usdprice){
                         let increase = coin.usdprice - previousNum 
                         increase = (increase/previousNum) * 100
-                    return <p className='positive daily'>{`+ ${increase.toFixed(2)}%`}</p>
+                    return <p className='positive daily'>{`+ ${increase.toFixed(2)}%`}<i className="material-icons">arrow_drop_up</i></p>
                 } else {
                     let decrease = previousNum - coin.usdprice
                     decrease = (decrease/previousNum) * 100
-                    return <p className='negative daily' >{`- ${decrease.toFixed(2)}%`}</p>
+                    return <p className='negative daily' >{`- ${decrease.toFixed(2)}%`}<i className="material-icons">arrow_drop_down</i></p>
                 }
             }
     }
@@ -42,11 +42,11 @@ class Coinlist extends React.Component{
             if(previousNum < coin.usdprice){
                     let increase = coin.usdprice - previousNum 
                     increase = (increase/previousNum) * 100
-                return <p className='positive weekly'>{`+ ${increase.toFixed(2)}%`}</p>
+                return <p className='positive weekly'>{`+ ${increase.toFixed(2)}%`}<i className="material-icons">arrow_drop_up</i></p>
             } else {
                 let decrease = previousNum - coin.usdprice
                 decrease = (decrease/previousNum) * 100
-                return <p className='negative weekly' >{`- ${decrease.toFixed(2)}%`}</p>
+                return <p className='negative weekly' >{`- ${decrease.toFixed(2)}%`}<i className="material-icons">arrow_drop_down</i></p>
             }
         }
     }

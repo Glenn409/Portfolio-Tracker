@@ -37,7 +37,7 @@ class NavBar extends React.Component{
                     </div>
                 </Link>
 
-                <Link className='text-link' to=''>
+                <Link className='text-link' to='/dashboard/transactions'>
                     <div className={this.state.activeIndex === 1 ? 'nav-box active' : 'nav-box'}  onClick={() => this.changeActive(1)}>
                     <i className="fa fa-tasks icon"></i>
                         <p>Transactions</p>

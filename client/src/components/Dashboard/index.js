@@ -5,6 +5,7 @@ import jwtDecode from 'jwt-decode'
 import NavBar from '../navBar'
 import Portfolio from '../portfolio'
 import Settings from '../Settings'
+import Transactions from '../transactions'
 import App from '../../App'
 import {fetchPortfolio,fetchHistoricalData} from '../fetchFunctions'
 
@@ -48,6 +49,11 @@ class Dashboard extends React.Component{
                                     </Route>
                                     <Route path='/dashboard/settings'>    
                                         <Settings />
+                                    </Route>
+                                    <Route path='/dashboard/transactions'>    
+                                        <Transactions 
+                                            portfolio={this.state.portfolio}
+                                        />
                                     </Route>
                                     <Route path=''>
                                         <App />

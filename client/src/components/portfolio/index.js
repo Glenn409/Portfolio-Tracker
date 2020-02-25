@@ -38,13 +38,18 @@ class Portfolio extends React.Component{
               balance = <h1>Portfolio Balance: {formatter.format(portfolio.balance.usd)}</h1>
          }
         return(
+            <div className='test-container'>
             <div className='portfolio-container'>
-                {/* {balance} */}
                 <div className='card'>
-                    <PerformanceGraph 
+                    <div className='header'>
+                        <p className='title'>Portfolio Performance </p>
+                        <p className='title-sub'>Balance:  {formatter.format(this.props.portfolio.balance.usd)}</p>
+
+                    </div>
+                    {/* <PerformanceGraph 
                         portfolio={portfolio}
                         historicalData={this.props.historicalData}
-                    />
+                    /> */}
                 </div>
 
                 <div className='second-row'>
@@ -76,6 +81,7 @@ class Portfolio extends React.Component{
                     </div> */}
                 </div>
             </div>
+        </div>
         )
     }
 }
