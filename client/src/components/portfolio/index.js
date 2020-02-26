@@ -30,7 +30,6 @@ class Portfolio extends React.Component{
         });
         // console.log(this.props)
         const portfolio = this.state.portfolio
-
         let balance;
         if(this.state.loading){
             balance = <h1 className='loading'>Loading...</h1>
@@ -46,10 +45,10 @@ class Portfolio extends React.Component{
                         <p className='title-sub'>Balance:  {formatter.format(this.props.portfolio.balance.usd)}</p>
 
                     </div>
-                    {/* <PerformanceGraph 
+                    <PerformanceGraph 
                         portfolio={portfolio}
                         historicalData={this.props.historicalData}
-                    /> */}
+                    />
                 </div>
 
                 <div className='second-row'>

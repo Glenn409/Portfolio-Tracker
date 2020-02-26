@@ -19,9 +19,10 @@ class Transactions extends React.Component{
             tags: [],
             searchList: [],
             amount: ' ',
-            amountError: '',
+            amountError: false,
             submitError: '',
             success: false,
+            recentTransaction: {}
         }
         this.toggleState = this.toggleState.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -45,15 +46,16 @@ class Transactions extends React.Component{
     }
     onAmountChange(e){
         if(e.target.value ==='' || isNaN(e.target.value) === true){
-            this.setState({amountError: 'error'})
+            this.setState({amountError: true})
         } else {
-            this.setState({amountError:''})
+            this.setState({amountError:false})
         }
         
         this.setState({amount:e.target.value})
     }
 
-    handleSubmit = async() =>{
+    handleSubmit = async(e) =>{
+        e.preventDefault()
         let type
         let purchaseDate
         let sellDate
@@ -84,12 +86,13 @@ class Transactions extends React.Component{
             }
            let result = await createNewTransaction(newTransaction)
            this.props.transactionChange(this.props.userId)
+           this.setState({recentTransaction: newTransaction})
+
             
          }
         }
     
     render(){
-        console.log(this.props)
         return(
             <div className='test-container'>
                 <div className='transactions-container'>
@@ -170,6 +173,7 @@ class Transactions extends React.Component{
 
                     <Transactiontable
                         transactions={this.props.portfolio.transactions}
+                        newTransaction={this.state.recentTransaction}
                     />
 
                 </div>

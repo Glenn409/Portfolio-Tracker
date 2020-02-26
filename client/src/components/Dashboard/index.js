@@ -33,15 +33,12 @@ class Dashboard extends React.Component{
     }
     onTransactionChange(id){
         fetchPortfolio(id).then(res =>{
-            console.log(res.data.data)
             this.setState({portfolio: res.data.data.portfolio})
             this.setState({historicalData: res.data.data.historicalData})
-            console.log(this.state)
         })
     }
 
     render(){
-        // console.log(this.state)
         let havePortfolio = <p></p>;
         if(!Object.keys(this.state.portfolio).length){
             havePortfolio = <h2>NO CONTENTS IN PORTFOLIO</h2>

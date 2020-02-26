@@ -6,9 +6,11 @@ class TransactionTable extends React.Component{
         super()
         this.state = {
             loading:true,
-            transactions: []
+            transactions: [],
+            recentTransactions: []
         }
         this.handleTransaction = this.handleTransaction.bind(this)
+        this.dateDecider = this.dateDecider.bind(this)
     }
     componentDidMount(){
     this.timer = setInterval(() =>{
@@ -22,9 +24,24 @@ class TransactionTable extends React.Component{
         }
     },75)
     }
+    componentDidUpdate(newProps){
+        if(newProps.newTransaction !== this.state.recentTransactions[this.state.recentTransactions.length -1]){
+            if(Object.entries(newProps.newTransaction).length > 0){
+                this.state.recentTransactions.push(newProps.newTransaction)
+            }
+        }
+    }
+
     handleTransaction(id){
         console.log(id)
         //handle delete here
+    }
+    dateDecider(coin){
+        let date =''
+        if(coin.purchaseDate === null){
+            date = coin.sellDate
+        } else date = coin.purchaseDate
+        return date
     }
     render(){
         function timeConverter(coin){
@@ -40,6 +57,7 @@ class TransactionTable extends React.Component{
             var time = month + '/' + date + '/' + year 
             return time;
           }
+
           let transactionList = this.state.transactions
         return(
             <div className='coinList-container card'>
@@ -59,9 +77,23 @@ class TransactionTable extends React.Component{
                                 <p className='type'>{coin.transaction_type.toUpperCase()}</p>
                                 <p className='date'>{timeConverter(coin)}</p>
                                 <p className='row-quantity'>{coin.quantity}</p>
-                                <p className='delete-record'><i class="material-icons"  style={{color:'red'}} onClick={() => this.handleTransaction(coin.id)}>close</i></p>
+                                <p className='delete-record'><i className="material-icons"  style={{color:'red'}} onClick={() => this.handleTransaction(coin.id)}>close</i></p>
                             </div>
                     })}
+                    {this.state.recentTransactions.length === 0 ? (
+                        <div></div>
+                    ) : ( 
+                        this.state.recentTransactions.map(coin =>{
+                            return <div className='data-row'>
+                                        <p className='coin'><img className={'coin-img'} src={require(`../../../node_modules/cryptocurrency-icons/32/color/${coin.coin}.png`)} />{coin.name}</p>
+                                        <p className='type'>{coin.transaction_type.toUpperCase()}</p> 
+                                        <p className='date'>{this.dateDecider(coin)}</p>
+                                        <p className='row-quantity'>{coin.quantity}</p>
+                                        <p className='delete-record'><i className="material-icons"  style={{color:'red'}} onClick={() => this.handleTransaction(coin.id)}>close</i></p>
+                                    </div>
+
+                        })
+                    )}
 
                 </div>
             </div>

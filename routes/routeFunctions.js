@@ -123,33 +123,6 @@ module.exports = {
         }
 
     },
-
-    // getDailyPercents:function(coin,cb){
-    //     const rp = require('request-promise');
-    //     const requestOptions = {
-    //     method: 'GET',
-    //     uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest',
-    //     qs: {
-    //         'slug': `${coin.toLowerCase()}`
-    //     },
-    //     headers: {
-    //         'X-CMC_PRO_API_KEY': `${process.env.COIN_MARKETCAP_APIKEY}`
-    //     },
-    //     json: true,
-    //     gzip: true
-    //     };
-
-    //     rp(requestOptions).then(response => {
-    //     let obj = {}
-    //     for(key in response.data){
-    //         if(response.data.hasOwnProperty(key)){
-    //             obj.daily = response.data[key].quote.USD.percent_change_24h,
-    //             obj. weekly =response.data[key].quote.USD.percent_change_7d
-    //         }
-    //     }
-    //         cb({data:obj})
-    //     })
-    // },
     //puts together the portfolio for react to access and display
     getPortfolio: function(id,cb){
         let coinInfo = []
