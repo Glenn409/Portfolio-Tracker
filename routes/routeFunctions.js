@@ -49,7 +49,7 @@ module.exports = {
         db.transaction.findAll({ 
             where: { UserId : userID} 
         }).then(res =>{
-            if(res === {}){
+            if(res === {} || res.length === 0){
                 cb({data: false})
             } else {
                 let returnObj = {
@@ -133,6 +133,9 @@ module.exports = {
         let btcValue = 0
 
         dis.transactionsAndQuantity(id, function(data){
+            if(data.data === false){
+                cb({portfolio:false})
+            }
             coins.quantity = data.data.quantityOfEachCoin
             transactionList = data.data.transactionList
             dis.getPriceValues(coins.quantity,function(data){
@@ -166,6 +169,9 @@ module.exports = {
     },
 
     async getHistoricalData(obj,cb){
+        // if(obj.portfolio === false){
+        //     cb({portfolio:false})
+        // }
         let url = 'https://min-api.cryptocompare.com/data/v2/histoday?fsym='
         let coin = ''
         let params1 =`&tsym=USD&limit=`
@@ -240,9 +246,21 @@ module.exports = {
     },
 
     createNewTransaction(obj,cb){
-        db.transaction.create(obj.transaction).then(
-            cb({success:'transaction created'})
+        db.transaction.create(obj.transaction).then( res =>{
+            cb({success:'transaction created',
+                id: res.dataValues.id})
+        }
         )
+    },
+    
+    deleteTransaction(id,cb){
+        db.transaction.destroy({
+            where: {
+                id: id
+            }
+        }).then(res =>{
+            cb({response: 'success'})
+        })
     }
 }
 

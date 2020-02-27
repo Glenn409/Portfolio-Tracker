@@ -27,9 +27,12 @@ module.exports = app => {
     app.post('/api/getPortfolio',(req,res) =>{
         routeTools.getPortfolio(req.body.userPortfolio, function(data){
              routeTools.getHistoricalData(data, function(historicalData){
-                    res.json({
-                        data:data
-                    })
+                 console.log(data)
+                 if(data.portfolio === false){
+                     res.json({portfolio:false})
+                 } else {
+                     res.json({data:data})
+                 }
                 })
             })
         })
@@ -47,6 +50,12 @@ module.exports = app => {
     })
     app.post('/api/createNewTransaction',(req,res) =>{
         routeTools.createNewTransaction(req.body, function(data){
+            res.send(data)
+        })
+    })
+
+    app.delete('/api/deleteTransaction',(req,res) =>{
+        routeTools.deleteTransaction(req.body.id, function(data){
             res.send(data)
         })
     })

@@ -1,6 +1,14 @@
 *{
     font-family: 'Source Sans Pro';
 }
+.loading-circle{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right:auto;
+}
 
 .container{
     position:fixed;

@@ -23,6 +23,7 @@ class Portfolio extends React.Component{
     }
 
     render(){
+        // console.log(this.props)
         //change integers into money format
         const formatter = new Intl.NumberFormat('en-US', {
                 style: 'currency',
@@ -45,10 +46,10 @@ class Portfolio extends React.Component{
                         <p className='title-sub'>Balance:  {formatter.format(this.props.portfolio.balance.usd)}</p>
 
                     </div>
-                    <PerformanceGraph 
+                    {/* <PerformanceGraph 
                         portfolio={portfolio}
                         historicalData={this.props.historicalData}
-                    />
+                    /> */}
                 </div>
 
                 <div className='second-row'>
@@ -67,17 +68,11 @@ class Portfolio extends React.Component{
                         portfolio={portfolio}
                         historicalData={this.props.historicalData}
                     />
-                    {/* <div className='coinList-container'>
-                        <div className='coinList-headers'>
-                            <p className='name'>Name</p>
-                            <p className='price'>Price</p>
-                        </div>
+                    {/* 
                     <Collapsible trigger="Start here">
                         <p>This is the collapsible content. It can be any element or React component you like.</p>
                         <p>It can even be another Collapsible component. Check out the next section!</p>
-                    </Collapsible>
-
-                    </div> */}
+                    </Collapsible> */}
                 </div>
             </div>
         </div>

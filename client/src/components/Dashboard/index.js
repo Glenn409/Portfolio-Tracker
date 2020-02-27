@@ -8,6 +8,9 @@ import Settings from '../Settings'
 import Transactions from '../transactions'
 import App from '../../App'
 import {fetchPortfolio} from '../fetchFunctions'
+import { makeStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 class Dashboard extends React.Component{
     constructor(){
@@ -32,7 +35,9 @@ class Dashboard extends React.Component{
         })
     }
     onTransactionChange(id){
+        console.log('cfetchign portfolio of id: ' + id)
         fetchPortfolio(id).then(res =>{
+            console.log(res)
             this.setState({portfolio: res.data.data.portfolio})
             this.setState({historicalData: res.data.data.historicalData})
         })
@@ -41,7 +46,13 @@ class Dashboard extends React.Component{
     render(){
         let havePortfolio = <p></p>;
         if(!Object.keys(this.state.portfolio).length){
-            havePortfolio = <h2>NO CONTENTS IN PORTFOLIO</h2>
+            havePortfolio = <div className='container'>
+                                <NavBar />
+                                <div className='loading-circle'>
+                                    <p className='title'>Generating Portfolio</p>
+                                    <CircularProgress loadsize={100} />
+                                </div>
+                            </div>
         } else {
             havePortfolio =<Router>
                             <div className='container'>

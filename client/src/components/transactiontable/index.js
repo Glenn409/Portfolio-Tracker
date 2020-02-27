@@ -1,16 +1,17 @@
 import React from 'react'
 import './index.css'
-import Moment from 'react-moment';
+import {deleteTransaction} from '../fetchFunctions'
+
 class TransactionTable extends React.Component{
     constructor(){
         super()
         this.state = {
             loading:true,
             transactions: [],
-            recentTransactions: []
+            recentTransactions: [],
+            update: false
         }
         this.handleTransaction = this.handleTransaction.bind(this)
-        this.dateDecider = this.dateDecider.bind(this)
     }
     componentDidMount(){
     this.timer = setInterval(() =>{
@@ -24,25 +25,14 @@ class TransactionTable extends React.Component{
         }
     },75)
     }
-    componentDidUpdate(newProps){
-        if(newProps.newTransaction !== this.state.recentTransactions[this.state.recentTransactions.length -1]){
-            if(Object.entries(newProps.newTransaction).length > 0){
-                this.state.recentTransactions.push(newProps.newTransaction)
-            }
-        }
+
+    handleTransaction(id,userId){
+        deleteTransaction(id).then(res =>{
+            this.props.deleteRecord(userId)
+            this.setState({update: true})
+        })
     }
 
-    handleTransaction(id){
-        console.log(id)
-        //handle delete here
-    }
-    dateDecider(coin){
-        let date =''
-        if(coin.purchaseDate === null){
-            date = coin.sellDate
-        } else date = coin.purchaseDate
-        return date
-    }
     render(){
         function timeConverter(coin){
             let decider;
@@ -57,10 +47,9 @@ class TransactionTable extends React.Component{
             var time = month + '/' + date + '/' + year 
             return time;
           }
-
-          let transactionList = this.state.transactions
+         
         return(
-            <div className='coinList-container card'>
+            <div className='coinList-container trans-table card'>
                 <p className='header y'>Transactions List</p>
                 <div className='coin-headers'>
                     <p className='header subheader coin'>Coin</p>
@@ -71,29 +60,18 @@ class TransactionTable extends React.Component{
                 </div>
 
                 <div className='coinList-data'>
-                    {transactionList.map(coin =>{
-                       return <div className='data-row'>
+                    {this.props.transactions.map(coin =>{
+                        return this.state.transactions.length === 0 ? 
+                            <p className='data-row' p>Currently no Transactions!</p>
+                            :
+                            <div className='data-row'>
                                 <p className='coin'><img className={'coin-img'} src={require(`../../../node_modules/cryptocurrency-icons/32/color/${coin.coin}.png`)} />{coin.name}</p>
                                 <p className='type'>{coin.transaction_type.toUpperCase()}</p>
                                 <p className='date'>{timeConverter(coin)}</p>
                                 <p className='row-quantity'>{coin.quantity}</p>
-                                <p className='delete-record'><i className="material-icons"  style={{color:'red'}} onClick={() => this.handleTransaction(coin.id)}>close</i></p>
+                                <p className='delete-record delete-header'><i className="material-icons"  style={{color:'red'}} onClick={() => this.handleTransaction(coin.id,coin.UserId)}>close</i></p>
                             </div>
                     })}
-                    {this.state.recentTransactions.length === 0 ? (
-                        <div></div>
-                    ) : ( 
-                        this.state.recentTransactions.map(coin =>{
-                            return <div className='data-row'>
-                                        <p className='coin'><img className={'coin-img'} src={require(`../../../node_modules/cryptocurrency-icons/32/color/${coin.coin}.png`)} />{coin.name}</p>
-                                        <p className='type'>{coin.transaction_type.toUpperCase()}</p> 
-                                        <p className='date'>{this.dateDecider(coin)}</p>
-                                        <p className='row-quantity'>{coin.quantity}</p>
-                                        <p className='delete-record'><i className="material-icons"  style={{color:'red'}} onClick={() => this.handleTransaction(coin.id)}>close</i></p>
-                                    </div>
-
-                        })
-                    )}
 
                 </div>
             </div>

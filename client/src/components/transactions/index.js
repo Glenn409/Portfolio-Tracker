@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {fetchCoins, createNewTransaction} from '../fetchFunctions'
+import {getHistoricalPrice} from '../fetchFunctions'
 
 class Transactions extends React.Component{
     constructor(){
@@ -16,44 +17,74 @@ class Transactions extends React.Component{
         this.state = {
             toggle:false,
             date: new Date(),
-            tags: [],
+            choseDate: false,
+            displayDate: '',
+            tags: {},
             searchList: [],
-            amount: ' ',
+            amount: 0,
             amountError: false,
             submitError: '',
             success: false,
-            recentTransaction: {}
+            recentTransaction: {},
+            displayValue: 0,
+            test: false
         }
         this.toggleState = this.toggleState.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.onTagsChange = this.onTagsChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.onAmountChange = this.onAmountChange.bind(this)
+        this.deleteRecord = this.deleteRecord.bind(this)
     }
     componentDidMount(){
         fetchCoins().then(res =>{
             this.setState({searchList: res.data.data})
         })
     }
-    toggleState(newValue) {
+    toggleState() {
 		this.setState({toggle: !this.state.toggle})
     }
     handleChange = date => {
         this.setState({date: date})
+        this.setState({displayDate: moment(date).format('MM/DD/YYYY')})
+        this.setState({choseDate: true}, () =>{
+            if(this.state.choseDate === true && (Object.keys(this.state.tags)).length > 0){
+                getHistoricalPrice(this.state.date, this.state.tags.symbol).then(res =>{
+                    this.setState({displayValue: res.data[`${this.state.tags.symbol}`].USD})
+                })
+            }
+        })
       }
     onTagsChange = (e,values) =>{
-        this.setState({tags: values})
+        if(values === null){
+            this.setState({tags: {}})
+        } else {
+            this.setState({tags: values}, () => {
+            if(this.state.choseDate === true && (Object.keys(this.state.tags)).length > 0){
+                getHistoricalPrice(this.state.date, this.state.tags.symbol).then(res =>{
+
+                    this.setState({displayValue: res.data[`${this.state.tags.symbol}`].USD})
+                    })
+                }
+            })
+        }
+
     }
+    
     onAmountChange(e){
-        if(e.target.value ==='' || isNaN(e.target.value) === true){
+        if(isNaN(e.target.value) === true){
             this.setState({amountError: true})
+            this.setState({amount: 0})
         } else {
             this.setState({amountError:false})
+            this.setState({amount:e.target.value})
         }
-        
-        this.setState({amount:e.target.value})
     }
-
+    deleteRecord(id){
+        console.log(id)
+        this.props.transactionChange(id)
+        this.setState({test: !this.state.test})
+    }
     handleSubmit = async(e) =>{
         e.preventDefault()
         let type
@@ -71,8 +102,8 @@ class Transactions extends React.Component{
             sellDate= newDate
             purchaseDate = null
         } 
-        if(this.state.tags.length = 0 || this.state.amount === ' '){
-            this.setState({submitError: 'Please fill in all forms!'})
+        if((Object.keys(this.state.tags)).length === 0 || this.state.amount === ' '){
+            this.setState({submitError: '* Please fill in all forms! *'})
         } else {
             this.setState({submitError:''})
             let newTransaction = {
@@ -84,15 +115,25 @@ class Transactions extends React.Component{
                 sellDate: sellDate,
                 UserId: this.props.userId
             }
-           let result = await createNewTransaction(newTransaction)
-           this.props.transactionChange(this.props.userId)
-           this.setState({recentTransaction: newTransaction})
+           createNewTransaction(newTransaction).then(res =>{
+               newTransaction.id = res.data.id
+               this.props.transactionChange(this.props.userId)
+               this.setState({recentTransaction: newTransaction})
+           })
+
 
             
          }
         }
     
     render(){
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
         return(
             <div className='test-container'>
                 <div className='transactions-container'>
@@ -100,64 +141,96 @@ class Transactions extends React.Component{
                     <div className='form-container card'>
                     <p className='header title'>Create a Transaction</p>  
                         <div className='creation'>
-                             <div className='first-row'>
-                                <div>
-                                    <p className='form-sub-title'>Coin</p>
-                                    <Autocomplete
-                                        freeSolo={false}
-                                        id='autocomplete-coin'
-                                        options={this.state.searchList}
-                                        getOptionLabel={option => `${option.name} (${option.symbol})`}
-                                        onChange={this.onTagsChange}
-                                        openText={''}
-                                        renderInput={params => (
-                                            <TextField
-                                            {...params}
-                                            placeholder="Coin Name"
+                            <div className='row-container'>
+                                <div className='first-row'>
+                                    <div>
+                                        <p className='form-sub-title'>Coin</p>
+                                        <Autocomplete
+                                            freeSolo={false}
+                                            id='autocomplete-coin'
+                                            options={this.state.searchList}
+                                            getOptionLabel={option => `${option.name} (${option.symbol})`}
+                                            onChange={this.onTagsChange}
+                                            openText={''}
+                                            renderInput={params => (
+                                                <TextField
+                                                {...params}
+                                                placeholder="Coin Name"
+                                                />
+                                            )}
+                                        />
+                                        <p className='form-sub-title'>Amount</p>
+                                        <TextField
+                                            error={this.state.amountError}
+                                            placeholder="123"
+                                            onChange={this.onAmountChange}
+                                            helperText={this.state.amountError ==='error'? 'Please input a Number!' : ''}
+                                        />
+                                    </div>
+                                    <div>
+                                        <p className='form-sub-title'>Select a date</p>
+                                        <DatePicker 
+                                            className='calender'
+                                            selected={this.state.date}
+                                            onChange={this.handleChange}
+                                            selected={this.state.choseDate ? this.state.date : null}
+                                        />
+                                    </div>
+                                    <div className='radioButtons switch-field'>
+                                        <div className=" form-sub-title x">Transaction Type</div>
+                                            <input
+                                                type="radio"
+                                                id="switch_left"
+                                                name="switchToggle"
+                                                value='buy'
+                                                onChange={this.toggleState}
+                                                checked={!this.state.toggle}
                                             />
+                                            <label htmlFor="switch_left">Buy</label>
+
+                                            <input
+                                                type="radio"
+                                                id="switch_right"
+                                                name="switchToggle"
+                                                value='sell'
+                                                onChange={this.toggleState}
+                                                checked={this.state.toggle}
+                                            />
+                                            <label htmlFor="switch_right">Sell</label>
+                                    </div>
+                                </div>                       
+                                <div className='transactions-second-row'>
+                                    <div className='display-container'>
+                                        {(Object.keys(this.state.tags)).length === 0 || this.state.tags === null? (
+                                            <div>
+                                                <div className='display-title'>
+                                                  <p className='form-sub-title display-name'>Please select a Coin!</p>
+                                                </div>
+                                                <p className='display-label'><strong>Symbol:</strong> {this.state.tags.symbol}</p>
+                                                <p className='display-label'><strong>Quantity:</strong> {numberWithCommas(this.state.amount)}</p>
+                                                <p className='display-label'><strong>Date:</strong> {this.state.displayDate}</p>
+                                                <p className='display-label'><strong>Value on this date:</strong> {formatter.format(this.state.displayValue)}</p>
+                                                <p className='display-label underline-value'><strong>Total Transaction Value:</strong> </p>
+                                                <p className='display-total'>{formatter.format(this.state.amount * this.state.displayValue)}</p>
+                                            </div>
+                                        ): (
+                                            <div>
+                                                <div className='display-title'>
+                                                    <img className='display-img' src={require(`../../../node_modules/cryptocurrency-icons/32/color/${this.state.tags.symbol.toLowerCase()}.png`)} />
+                                                    <p className='form-sub-title display-name'>{this.state.tags.name}</p>   
+                                                </div>
+                                                <p className='display-label'><strong>Symbol:</strong> {this.state.tags.symbol}</p>
+                                                <p className='display-label'><strong>Quantity:</strong> {numberWithCommas(this.state.amount)}</p>
+                                                <p className='display-label'><strong>Date:</strong> {this.state.displayDate}</p>
+                                                <p className='display-label'><strong>Value on this date:</strong> {formatter.format(this.state.displayValue)}</p>
+                                                <p className='display-label underline-value'><strong>Total Transaction Value:</strong> </p>
+                                                <p className='display-total'>{formatter.format(this.state.amount * this.state.displayValue)}</p>
+                                            </div>
                                         )}
-                                    />
-                                    <p className='form-sub-title'>Amount</p>
-                                    <TextField
-                                        error={this.state.amountError}
-                                        placeholder="123"
-                                        onChange={this.onAmountChange}
-                                        helperText={this.state.amountError ==='error'? 'Please input a Number!' : ''}
-                                    />
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className='form-sub-title'>Select a date</p>
-                                    <DatePicker 
-                                        className='calender'
-                                        selected={this.state.date}
-                                        onChange={this.handleChange}
-                                    />
-                                </div>
-                            </div>                       
-
-                            <div className='radioButtons switch-field'>
-                                <div className="sub-title x">Transaction Type</div>
-                                    <input
-                                        type="radio"
-                                        id="switch_left"
-                                        name="switchToggle"
-                                        value='buy'
-                                        onChange={this.toggleState}
-                                        checked={!this.state.toggle}
-                                    />
-                                    <label htmlFor="switch_left">Buy</label>
-
-                                    <input
-                                        type="radio"
-                                        id="switch_right"
-                                        name="switchToggle"
-                                        value='sell'
-                                        onChange={this.toggleState}
-                                        checked={this.state.toggle}
-                                    />
-                                    <label htmlFor="switch_right">Sell</label>
                             </div>
-                            <Button variant="contained" onClick={this.handleSubmit} color="primary">submit</Button>
+                            <Button variant="contained" className='display-button' onClick={this.handleSubmit} color="primary">submit</Button>
 
                             <div>
                                 {this.state.success ?(
@@ -172,6 +245,8 @@ class Transactions extends React.Component{
                     </div>
 
                     <Transactiontable
+                        userId={this.props.userId}
+                        deleteRecord={this.deleteRecord}
                         transactions={this.props.portfolio.transactions}
                         newTransaction={this.state.recentTransaction}
                     />

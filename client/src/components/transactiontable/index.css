@@ -1,10 +1,10 @@
-.card{
+ .card{
     background-color:white;
     -moz-box-shadow: 0px 1px 5px 1px #676767;
     -webkit-box-shadow: 0px 1px 5px 1px #676767;
     box-shadow: 0px 1px 5px 1px #676767;
 }
-.coinList-container {
+.trans-table {
     margin-bottom:50px;
 }
 .coin-container{
@@ -66,8 +66,8 @@ p.delete-record{
     border:none;
     width:2%;
     padding-top:5px;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left:10px;
+    margin-right:10px;;
     padding-bottom:5px;
     padding-left:5px;
     padding-right:5px;
@@ -75,12 +75,13 @@ p.delete-record{
 }
 p.delete-record:hover{
     cursor:pointer;
-    border-bottom:1px solid grey;
-    /* background-color:hsl(0, 0%, 79%); */
-}
+    background-color:hsl(0, 0%, 89%); 
+    border-radius: 20%;
+ }
 .coin-headers .delete-record{
     border:none;
 }
+
 p.y {
     font-size:25px;
 }
@@ -94,4 +95,8 @@ p.subheader {
     text-align: center;
     font-size:20px;
     color:red;
+} 
+p.header.subheader.delete-record:hover{
+    cursor: auto;
+    background-color:#5f6b7e !important;
 }
