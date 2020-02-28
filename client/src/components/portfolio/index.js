@@ -3,6 +3,7 @@ import './index.css'
 import DonutGraph from '../donutGraph/index'
 import PerformanceGraph from '../performanceGraph/index'
 import Coinlist from '../coinlist/index'
+import StatsCard from '../statsCard/index'
 class Portfolio extends React.Component{
     constructor(props){
         super(props);
@@ -23,7 +24,7 @@ class Portfolio extends React.Component{
     }
 
     render(){
-        console.log(this.props)
+        // console.log(this.props)
         //change integers into money format
         const formatter = new Intl.NumberFormat('en-US', {
                 style: 'currency',
@@ -54,7 +55,9 @@ class Portfolio extends React.Component{
 
                 <div className='second-row'>
                     <div className='card stats'>
-                        <h1>Stats Card</h1>
+                        <StatsCard 
+                            portfolio={portfolio}
+                        />
                     </div>
                     <div className='donut-graph-container card'>
                         <DonutGraph
