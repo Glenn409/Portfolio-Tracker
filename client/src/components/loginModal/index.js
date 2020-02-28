@@ -60,7 +60,9 @@ class loginModal extends React.Component {
         password: this.state.password
       }).then(res => {
         if(res.data.error){
-          console.log('Recieved a error while logging in: ' + res.data.error)
+          if(res.data.error === 'Invalid Username'){
+            this.setState({emailError: true})
+          } else this.setState({passwordError:true})
           this.setState({loginError: '* ' +res.data.error +' *'})
         } else {
           localStorage.setItem('userToken', res.data.accessToken)
@@ -113,7 +115,7 @@ class loginModal extends React.Component {
               </div>
 
               <button onClick={this.handleSubmit} className='login-button'>Sign In</button>
-              <p>{this.state.loginError}</p>
+              <p class='error'>{this.state.loginError}</p>
           </form>
           
         </Modal>
