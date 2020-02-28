@@ -12,18 +12,18 @@ class NavBar extends React.Component{
         this.logOut = this.logOut.bind(this)
         this.changeActive = this.changeActive.bind(this)
     }
+    componentWillReceiveProps(prop){
+        this.setState({activeIndex:prop.changeIndex})
+    }
     logOut(e){
         e.preventDefault()
         localStorage.removeItem('userToken')
         this.props.history.push('')
     }
     changeActive(index){
-        this.setState({
-            activeIndex:index
-        })
+        this.props.newIndex(index)
     }
     render(){
-  
         return(
             <div className='nav-container'>
                 <div className='title-box'>

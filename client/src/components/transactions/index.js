@@ -81,7 +81,6 @@ class Transactions extends React.Component{
         }
     }
     deleteRecord(id){
-        console.log(id)
         this.props.transactionChange(id)
         this.setState({test: !this.state.test})
     }
@@ -243,14 +242,19 @@ class Transactions extends React.Component{
                         </div>
 
                     </div>
+                    {this.props.portfolio === undefined ? (
+                        <Transactiontable
+                            userId={this.props.userId}
+                            deleteRecord={this.deleteRecord} />
+                    ):(
+                        <Transactiontable
+                            userId={this.props.userId}
+                            deleteRecord={this.deleteRecord}
+                            transactions={this.props.portfolio.transactions}
+                            newTransaction={this.state.recentTransaction}
+                        />
 
-                    <Transactiontable
-                        userId={this.props.userId}
-                        deleteRecord={this.deleteRecord}
-                        transactions={this.props.portfolio.transactions}
-                        newTransaction={this.state.recentTransaction}
-                    />
-
+                    )}
                 </div>
             </div>
         )

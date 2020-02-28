@@ -1,6 +1,5 @@
 import React from 'react'
 import './index.css'
-// import Collapsible from 'react-collapsible'
 
 class Coinlist extends React.Component{
     constructor(){
@@ -24,7 +23,6 @@ class Coinlist extends React.Component{
     }
     getDailyTickers(coin){
             if(this.props.historicalData){
-                console.log(this.props.historicalData)
                 let previousNum =(this.props.historicalData[`${coin.symbol}`][this.props.historicalData[`${coin.symbol}`].length -2].close)
                 if(previousNum < coin.usdprice){
                         let increase = coin.usdprice - previousNum 
@@ -82,11 +80,6 @@ class Coinlist extends React.Component{
                     })}
                     
                 </div>
-        {/* <Collapsible trigger="Start here">
-            <p>This is the collapsible content. It can be any element or React component you like.</p>
-            <p>It can even be another Collapsible component. Check out the next section!</p>
-        </Collapsible> */}
-
             </div>
         )
     }

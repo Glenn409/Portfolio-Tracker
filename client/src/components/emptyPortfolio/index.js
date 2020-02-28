@@ -10,9 +10,13 @@ class EmptyPortfolio extends React.Component{
 
         }
         this.redirect = this.redirect.bind(this)
+        this.updateIndex = this.updateIndex.bind(this)
     }
     redirect(){
         this.props.history.push('/dashboard/transactions')
+    }
+    updateIndex(){
+        this.props.changeIndex(1)
     }
     render(){
         return(
@@ -22,8 +26,8 @@ class EmptyPortfolio extends React.Component{
                     <div>
                         <p>Your Portfolio Page looks a little empty, no worries!</p>
                         <p>It looks like you haven't made a transaction Yet.</p>
-                        <p>Create a transaction to generate a Portfolio!</p>
-                        <Button component={Link} to='/dashboard/transactions' variant="contained" className='start-button' color="primary">Create a Transaction</Button>
+                        <p className='empty-third'>Create a transaction to generate a Portfolio!</p>
+                        <Button component={Link} to='/dashboard/transactions' onClick={this.updateIndex} variant="contained" className='start-button' color="primary">Create a Transaction</Button>
                     </div>
                 </div>
             </div>

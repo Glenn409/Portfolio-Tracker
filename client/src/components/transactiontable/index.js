@@ -14,16 +14,19 @@ class TransactionTable extends React.Component{
         this.handleTransaction = this.handleTransaction.bind(this)
     }
     componentDidMount(){
-    this.timer = setInterval(() =>{
+    this.timer = setTimeout(() =>{
         if(this.props.transactions){
-            clearInterval(this.timer)
-            this.timer=null
+            // clearInterval(this.timer)
+            // this.timer=null
             this.props.transactions.map(coin =>{  
                 this.state.transactions.push(coin)
             })
             this.setState({loading:false})
+        } else {
+            // clearInterval(this.timer)
+            // this.timer=null
         }
-    },75)
+    },150)
     }
 
     handleTransaction(id,userId){
@@ -60,17 +63,17 @@ class TransactionTable extends React.Component{
                 </div>
 
                 <div className='coinList-data'>
-                    {this.props.transactions.map(coin =>{
-                        return this.state.transactions.length === 0 ? 
-                            <p className='data-row' p>Currently no Transactions!</p>
+                    {this.props.transactions === undefined ? 
+                            <p className='no-transactions' >Currently no Transactions!</p>
                             :
-                            <div className='data-row'>
-                                <p className='coin'><img className={'coin-img'} src={require(`../../../node_modules/cryptocurrency-icons/32/color/${coin.coin}.png`)} />{coin.name}</p>
-                                <p className='type'>{coin.transaction_type.toUpperCase()}</p>
-                                <p className='date'>{timeConverter(coin)}</p>
-                                <p className='row-quantity'>{coin.quantity}</p>
-                                <p className='delete-record delete-header'><i className="material-icons"  style={{color:'red'}} onClick={() => this.handleTransaction(coin.id,coin.UserId)}>close</i></p>
-                            </div>
+                        this.props.transactions.map(coin =>{
+                        return <div className='data-row'>
+                                    <p className='coin'><img className={'coin-img'} src={require(`../../../node_modules/cryptocurrency-icons/32/color/${coin.coin}.png`)} />{coin.name}</p>
+                                    <p className='type'>{coin.transaction_type.toUpperCase()}</p>
+                                    <p className='date'>{timeConverter(coin)}</p>
+                                    <p className='row-quantity'>{coin.quantity}</p>
+                                    <p className='delete-record delete-header'><i className="material-icons"  style={{color:'red'}} onClick={() => this.handleTransaction(coin.id,coin.UserId)}>close</i></p>
+                                </div>
                     })}
 
                 </div>

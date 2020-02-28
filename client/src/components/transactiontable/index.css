@@ -10,6 +10,10 @@
 .coin-container{
     width:100%;
 }
+.no-transactions{
+    text-align: center;
+    font-size:18px;
+}
 .coin-headers{
     width:100%;
     background-color:#5f6b7e;

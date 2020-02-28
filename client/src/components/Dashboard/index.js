@@ -6,6 +6,7 @@ import NavBar from '../navBar'
 import Portfolio from '../portfolio'
 import Settings from '../Settings'
 import Transactions from '../transactions'
+import EmptyPortfolio from'../emptyPortfolio'
 import App from '../../App'
 import {fetchPortfolio} from '../fetchFunctions'
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,11 +17,14 @@ class Dashboard extends React.Component{
     constructor(){
         super()
         this.state = {
+            loaded:false,
             userId: '',
             portfolio: {},
-            historicalData: {}
+            historicalData: {},
+            index: 0
         }
         this.onTransactionChange = this.onTransactionChange.bind(this)
+        this.changeIndex = this.changeIndex.bind(this)
     }
     UNSAFE_componentWillMount(){
         const token = localStorage.userToken
@@ -30,22 +34,33 @@ class Dashboard extends React.Component{
     }
     componentDidMount(){
         fetchPortfolio(this.state.userId).then(res =>{
-            this.setState({portfolio: res.data.data.portfolio})
-            this.setState({historicalData: res.data.data.historicalData})
+            if(res.data.portfolio === false){
+                this.setState({portfolio:{}})
+                this.setState({loaded:true})
+            } else {
+                this.setState({portfolio: res.data.data.portfolio})
+                this.setState({historicalData: res.data.data.historicalData})
+                this.setState({loaded:true})
+
+            }
         })
     }
     onTransactionChange(id){
-        console.log('cfetchign portfolio of id: ' + id)
         fetchPortfolio(id).then(res =>{
-            console.log(res)
-            this.setState({portfolio: res.data.data.portfolio})
-            this.setState({historicalData: res.data.data.historicalData})
+            if(res.data.portfolio === false){
+                this.setState({portfolio:{}})
+            } else {
+                this.setState({portfolio: res.data.data.portfolio})
+                this.setState({historicalData: res.data.data.historicalData})
+            }
         })
     }
-
+    changeIndex(num){
+        this.setState({index: num})
+    }
     render(){
         let havePortfolio = <p></p>;
-        if(!Object.keys(this.state.portfolio).length){
+        if(!this.state.loaded){
             havePortfolio = <div className='container'>
                                 <NavBar />
                                 <div className='loading-circle'>
@@ -53,10 +68,37 @@ class Dashboard extends React.Component{
                                     <CircularProgress loadsize={100} />
                                 </div>
                             </div>
+        } else if(!this.state.portfolio.transactions){
+            havePortfolio = <div className='container'>
+                                <NavBar 
+                                    changeIndex={this.state.index}
+                                    newIndex={this.changeIndex}
+                                />
+                                <Switch>
+                                    <Route path='/dashboard/portfolio'>
+                                        <EmptyPortfolio 
+                                            changeIndex={this.changeIndex}
+                                        />
+                                    </Route>
+                                    <Route path='/dashboard/settings'>    
+                                        <Settings />
+                                    </Route>
+                                    <Route path='/dashboard/transactions'>    
+                                        <Transactions 
+                                            transactionChange = {this.onTransactionChange}
+                                            userId={this.state.userId}
+                                            // portfolio={this.state.portfolio}
+                                        />
+                                    </Route>
+                                </Switch>
+                            </div>
         } else {
             havePortfolio =<Router>
                             <div className='container'>
-                                <NavBar />
+                                <NavBar 
+                                    changeIndex={this.state.index}
+                                    newIndex={this.changeIndex}
+                                />
                                 <Switch>
                                     <Route path='/dashboard/portfolio'>
                                         <Portfolio 
