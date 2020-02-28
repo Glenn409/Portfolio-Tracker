@@ -61,7 +61,7 @@ class loginModal extends React.Component {
       }).then(res => {
         if(res.data.error){
           console.log('Recieved a error while logging in: ' + res.data.error)
-          this.setState({loginError: res.data.error})
+          this.setState({loginError: '* ' +res.data.error +' *'})
         } else {
           localStorage.setItem('userToken', res.data.accessToken)
           this.props.history.push(`/dashboard/portfolio`)
@@ -75,23 +75,40 @@ class loginModal extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this.openModal}>Sign In</button>
-        <Modal className ='modal-container' isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal}>
+        <button className='signup-button' onClick={this.openModal}>Sign In</button>
+        <Modal
+        style={{overlay:{
+          outline: 'none',
+          backgroundColor: 'rgba(0, 0, 0,0.8)'
+        },
+        content:{
+          backgroundColor:'#354052'
+        }
+        }}
+          className ='modal-container' 
+          isOpen={this.state.modalIsOpen} 
+          onRequestClose={this.closeModal}>
             <div className='modal-header'>  
                 <i onClick={this.closeModal} className="material-icons close">close</i>
             </div>
           <form className='modal-form'>
             
-            <p className='modal-title'>User Login</p>
+            <div className='modal-title'>
+                <div className='signup-title-box login-title-box'>
+                  <i className="fa fa-pie-chart login-title-icon"></i>
+                  <p className= 'form-title-signup form-title-login'>CryptoTracking</p>
+                </div>
+                <p className='user-login'>User Login</p>
+              </div>
             <div className={ this.state.emailError ? 'error-box login-input-box' : 'login-input-box'}>
-                <i className="material-icons" >email</i>
+                <i className="material-icons login-icon" >email</i>
                 <input className='login-input' placeholder='Email' value={this.state.email} onChange={this.handleChange} name='email'></input>
                 <span role='img' className={this.state.emailError ? '' : 'error-icon-hide'}>&#10060;</span>
             </div>
 
               <div className={this.state.passwordError ? ' error-box login-input-box' : 'login-input-box'}>
-                <i className='material-icons'>lock</i>
-                <input placeholder='Password' className='login-input' onChange={this.handleChange} name='password'></input>
+                <i className='material-icons login-icon'>lock</i>
+                <input type='password' placeholder='Password' className='login-input' onChange={this.handleChange} name='password'></input>
                 <span  role ='img'className={this.state.passwordError ? '' : 'error-icon-hide'}>&#10060;</span>
               </div>
 

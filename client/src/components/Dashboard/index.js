@@ -27,8 +27,11 @@ class Dashboard extends React.Component{
         this.changeIndex = this.changeIndex.bind(this)
     }
     UNSAFE_componentWillMount(){
+        console.log(localStorage.userToken)
         const token = localStorage.userToken
+        console.log(token)
         const decoded = jwtDecode(token)
+        console.log(decoded)
         this.setState({userId: decoded.userID})
 
     }

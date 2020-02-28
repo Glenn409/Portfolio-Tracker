@@ -25,7 +25,6 @@ class EmptyPortfolio extends React.Component{
                     <p className='start-title'>Create a Portfolio</p>
                     <div>
                         <p>Your Portfolio Page looks a little empty, no worries!</p>
-                        <p>It looks like you haven't made a transaction Yet.</p>
                         <p className='empty-third'>Create a transaction to generate a Portfolio!</p>
                         <Button component={Link} to='/dashboard/transactions' onClick={this.updateIndex} variant="contained" className='start-button' color="primary">Create a Transaction</Button>
                     </div>

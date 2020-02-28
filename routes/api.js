@@ -20,7 +20,16 @@ module.exports = app => {
             password: req.body.password
         }
         routeTools.signUp(newUser, function(data){
-            console.log(data)
+            if(data.error){
+                console.log(`error: ${data.error}`)
+                res.send({res: data})
+            } else {
+                console.log('success logging in now')
+                routeTools.login(newUser,function(data){
+                    console.log(`after login: ${JSON.stringify(data)}`)
+                    res.send({success:data})
+                })
+            }
         })
     })
     //a route to retrieve the users portfolio/data
