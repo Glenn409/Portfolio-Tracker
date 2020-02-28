@@ -9,7 +9,6 @@ import Transactions from '../transactions'
 import EmptyPortfolio from'../emptyPortfolio'
 import App from '../../App'
 import {fetchPortfolio} from '../fetchFunctions'
-import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 

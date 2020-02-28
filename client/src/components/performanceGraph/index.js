@@ -5,7 +5,8 @@ import moment from 'moment'
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { sort } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
 am4core.useTheme(am4themes_animated);
 
 class performanceGraph extends React.Component {
@@ -41,8 +42,9 @@ class performanceGraph extends React.Component {
 
           let data = [];
           //sets up porfolio balance in main graph
-          let arrayOfDailyBalance = [this.state.graphData.datasets[0].data[0]]
-          for(let i = 1; i < this.state.dailyPortfolio.length -1; i++){
+          console.log(this.state)
+          let arrayOfDailyBalance = []
+          for(let i = 0; i < this.state.dailyPortfolio.length ; i++){
             const userCoins = Object.keys(this.state.dailyPortfolio[i].portfolio)
             let balance = 0;
 
@@ -108,7 +110,7 @@ class performanceGraph extends React.Component {
         this.chart.dispose();
       }
     }
-    //returns earliest date so we  can set up labels
+
     createOverallBalance() {
 
       let data = []
@@ -123,8 +125,8 @@ class performanceGraph extends React.Component {
       } else {
         startingDate = farthestDate
       }
-      let timeFrame = []
 
+      let timeFrame = []
       const coinList = Object.keys(this.props.historicalData)
 
 
@@ -139,18 +141,26 @@ class performanceGraph extends React.Component {
           }
         }
       }
-
+      let newTimeFrame = []
+      timeFrame.map(time =>{
+        newTimeFrame.push(moment(time))
+      })
+      let sortedArray = newTimeFrame.sort((a, b) => a.valueOf() - b.valueOf())
+       timeFrame = []
+      sortedArray.map(time =>{
+        timeFrame.push(moment(time).format('MM/DD/YYYY'))
+      })
       let costBasis = 0;
       let quantity = {}
       //generates our costbasic and portfoli quantities before we enter our graph timeframe
+
       for(let i = 0; i < transactions.length; i++){
         if(!timeFrame.includes(moment.unix(transactions[i].purchaseDate).format('MM/DD/YYYY'))){
           let coin = transactions[i].coin.toUpperCase()
           for(let x = 0; x< this.props.historicalData[coin].length;x++){
             if(moment.unix(this.props.historicalData[coin][x].time).format('MM/DD/YYYY') === moment.unix(transactions[i].purchaseDate).format('MM/DD/YYYY')){
-              let avg = (this.props.historicalData[coin][i].high + this.props.historicalData[coin][i].low) / 2
-              
-              costBasis += ( avg * transactions[i].quantity)
+              let avg = (this.props.historicalData[coin][x].high + this.props.historicalData[coin][x].low) / 2
+              costBasis += ( avg * parseInt(transactions[i].quantity))
               if(!quantity[`${transactions[i].coin}`]){
                 quantity[`${transactions[i].coin}`] = 0
               }
@@ -161,16 +171,14 @@ class performanceGraph extends React.Component {
       }
 
       let balances = {}
-
       for(let i = 0; i < timeFrame.length; i++){
         let dataObj = {}
         let newObj = {}
         for(let y = 0; y < transactions.length; y++){
-          if(timeFrame[i] === moment.unix(transactions[y].purchaseDate).format('MM/DD/YYYY')){
+          if(timeFrame[i] === moment.unix(transactions[y].purchaseDate).format('MM/DD/YYYY') ||timeFrame[i] === moment.unix(transactions[y].sellDate).format('MM/DD/YYYY')){
             let coin = transactions[y].coin.toUpperCase()
             for(let x = 0; x < this.props.historicalData[coin].length;x++){
-
-              if(moment.unix(this.props.historicalData[coin][x].time).format('MM/DD/YYYY') === moment.unix(transactions[y].purchaseDate).format('MM/DD/YYYY')){
+              if(moment.unix(this.props.historicalData[coin][x].time).format('MM/DD/YYYY') === moment.unix(transactions[y].purchaseDate).format('MM/DD/YYYY') || moment.unix(this.props.historicalData[coin][x].time).format('MM/DD/YYYY') === moment.unix(transactions[y].sellDate).format('MM/DD/YYYY') ){
                 let avg = (this.props.historicalData[coin][x].high + this.props.historicalData[coin][x].low) / 2
                 costBasis += (avg * transactions[y].quantity)
 
@@ -181,17 +189,20 @@ class performanceGraph extends React.Component {
                 if(!balances[`${transactions[y].coin}`]){
                   balances [`${transactions[y].coin}`] = 0
                 }
+            
                 balances[`${transactions[y].coin}`] += parseFloat(avg * transactions[y].quantity)
                 quantity[`${transactions[y].coin}`] += parseFloat(transactions[y].quantity)
              } 
             }
-          } else {
+          }
+           else {
             let coin = transactions[y].coin.toUpperCase()
             for(let x = 0; x< this.props.historicalData[coin].length;x++){
               if(moment.unix(this.props.historicalData[coin][x].time).format('MM/DD/YYYY') === timeFrame[i]){
                 if(!balances[`${transactions[y].coin}`]){
                   balances [`${transactions[y].coin}`] = 0
                 }
+
                 let avg = (this.props.historicalData[coin][x].high + this.props.historicalData[coin][x].low) / 2
                 balances[`${transactions[y].coin}`] = avg * quantity[`${transactions[y].coin}`]
               }
@@ -209,7 +220,6 @@ class performanceGraph extends React.Component {
         dataObj.costBasis = costBasis
         dataObj.portfolio = newObj
         dataObj.date = timeFrame[i]
-
         data.push(dataObj)
       }
 
@@ -222,11 +232,19 @@ class performanceGraph extends React.Component {
     }
 
     render() {
-
       return (
-        <div className='performgraph'>
-          <div id='chartdiv'></div>
+        <div>
+          {this.state.loading ? (
+              <div className='loading-circle'>
+                <CircularProgress loadsize={100} />
+              </div>
+          ): (
+            <div className='performgraph'>
+              <div id='chartdiv'></div>
+            </div>
+          )}
         </div>
+
       );
     }
   }

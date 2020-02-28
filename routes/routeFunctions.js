@@ -149,6 +149,7 @@ module.exports = {
                     for(let x = 0; x < coinInfo.length;x++){
                         Object.keys(coinInfo[x]).map(function(key,index){
                             if(coinKeys[i].toUpperCase() === coinInfo[x][key]){
+                                console.log(coinInfo[x])
                                 coinInfo[x].quantity = quantity[i]
                                 coinInfo[x].coinUSDBalance = quantity[i] * coinInfo[x][`usdprice`]
                                 usdValue += coinInfo[x].coinUSDBalance

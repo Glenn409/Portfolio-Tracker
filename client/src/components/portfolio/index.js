@@ -23,7 +23,7 @@ class Portfolio extends React.Component{
     }
 
     render(){
-        // console.log(this.props)
+        console.log(this.props)
         //change integers into money format
         const formatter = new Intl.NumberFormat('en-US', {
                 style: 'currency',

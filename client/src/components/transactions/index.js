@@ -24,7 +24,8 @@ class Transactions extends React.Component{
             amount: 0,
             amountError: false,
             submitError: '',
-            success: false,
+            success: '',
+            successMsg: '',
             recentTransaction: {},
             displayValue: 0,
             test: false
@@ -86,43 +87,55 @@ class Transactions extends React.Component{
     }
     handleSubmit = async(e) =>{
         e.preventDefault()
-        let type
-        let purchaseDate
-        let sellDate
-        let newDate = moment(this.state.date).format('X')
-        newDate = parseInt(newDate)
-
-        if (this.state.toggle === false){
-            type = 'buy'
-            purchaseDate =  newDate
-            sellDate = null
-        } else{
-            type = 'sell'
-            sellDate= newDate
-            purchaseDate = null
-        } 
-        if((Object.keys(this.state.tags)).length === 0 || this.state.amount === ' '){
-            this.setState({submitError: '* Please fill in all forms! *'})
+        if(this.state.amount === '' || this.state.tags.name === undefined){
+            this.setState({success:'false'})
+            this.setState({submitError: '* Please fill in all forms *'})
         } else {
-            this.setState({submitError:''})
-            let newTransaction = {
-                transaction_type: type,
-                coin: this.state.tags.symbol.toLowerCase(),
-                name: this.state.tags.name,
-                quantity: this.state.amount,
-                purchaseDate: purchaseDate,
-                sellDate: sellDate,
-                UserId: this.props.userId
+            this.setState({submitError: ''})
+            let type
+            let purchaseDate
+            let sellDate
+            let newDate = moment(this.state.date).format('X')
+            let negNum
+            newDate = parseInt(newDate)
+    
+            if (this.state.toggle === false){
+                type = 'buy'
+                purchaseDate =  newDate
+                sellDate = null
+                negNum = parseFloat(this.state.amount)
+            } else{
+                type = 'sell'
+                sellDate= newDate
+                purchaseDate = null
+                negNum = parseFloat(this.state.amount) * -1
+            } 
+            if((Object.keys(this.state.tags)).length === 0 || this.state.amount === ' '){
+                this.setState({submitError: '* Please fill in all forms! *'})
+            } else {
+                this.setState({submitError:''})
+                let newTransaction = {
+                    transaction_type: type,
+                    coin: this.state.tags.symbol.toLowerCase(),
+                    name: this.state.tags.name,
+                    quantity: negNum,
+                    purchaseDate: purchaseDate,
+                    sellDate: sellDate,
+                    UserId: this.props.userId
+                }
+                this.setState({success:'true'})
+                this.setState({successMsg: 'Transaction Created!'})
+               createNewTransaction(newTransaction).then(res =>{
+                   newTransaction.id = res.data.id
+                   this.props.transactionChange(this.props.userId)
+                   this.setState({recentTransaction: newTransaction})
+                  
+               })
+    
+    
+                
+             }
             }
-           createNewTransaction(newTransaction).then(res =>{
-               newTransaction.id = res.data.id
-               this.props.transactionChange(this.props.userId)
-               this.setState({recentTransaction: newTransaction})
-           })
-
-
-            
-         }
         }
     
     render(){
@@ -133,6 +146,21 @@ class Transactions extends React.Component{
         function numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
+        let checkReponse
+        if(this.state.success === 'true'){
+           checkReponse = <div class="form-success">
+                            <i class="material-icons transaction-icon">done</i>
+                            <p>{this.state.successMsg}</p>
+                       </div>
+        } else if(this.state.success === 'false'){
+          checkReponse =   <div className='form-error'>
+                                <i class="material-icons transaction-icon">error_outline</i>
+                                <p>{this.state.submitError}</p>
+                            </div>
+
+         } else {
+             checkReponse = <p></p>
+         }
         return(
             <div className='test-container'>
                 <div className='transactions-container'>
@@ -229,15 +257,13 @@ class Transactions extends React.Component{
                                     </div>
                                 </div>
                             </div>
-                            <Button variant="contained" className='display-button' onClick={this.handleSubmit} color="primary">submit</Button>
+                            <div className='Button-container'>
+                                <Button variant="contained" className='display-button' onClick={this.handleSubmit} color="primary">submit</Button>
+                            </div>
 
                             <div>
-                                {this.state.success ?(
-                                    <p className='form-success'>Transaction Created!</p>
-                                ): (
-                                    <p className='form-error'>{this.state.submitError}</p>
-
-                                )}
+                                {checkReponse}
+  
                             </div>
                         </div>
 

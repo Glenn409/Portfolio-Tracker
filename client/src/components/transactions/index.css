@@ -81,17 +81,56 @@
     font-size:20px;
     font-weight: 600;
 }
+.Button-container{
+    margin-bottom:20px;
+}
 .display-button{
     margin-left:auto;
     margin-right:auto;
-    margin-bottom:20px;
     width:500px;
 }
 .x{
     padding-bottom:20px;
 }
 
-
+.form-success{
+    justify-content: ce;
+    margin-bottom:20px;
+    display:flex;
+    width:300px;
+    align-items: center;
+    border:2px solid green;
+    padding:5px 10px 5px 10px;
+    font-size:20px;
+    font-weight: bold;
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+.form-success p{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.transaction-icon{
+    font-size:30px;
+    padding-right:10px;
+    padding-left:10px;
+}
+.form-error p{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.form-error{
+    display:flex;
+    align-items: center;
+    width:300px;
+    border:2px solid red;
+    padding:5px 10px 5px 10px;
+    font-size:16px;
+    font-weight:bold;
+    margin-bottom:20px;
+    color: #D8000C;
+    background-color: #FFD2D2;
+}
 
 /* ------------------------------------------ */
 .switch-field {
@@ -171,6 +210,4 @@ border-radius: 0 4px 4px 0;
 .display-title{
     margin-top:31px;
 }
-.form-error{
-    font-weight:bold;
-}
+/* ----------------------------- */
