@@ -46,10 +46,10 @@ class Portfolio extends React.Component{
                         <p className='title-sub'>Balance:  {formatter.format(this.props.portfolio.balance.usd)}</p>
 
                     </div>
-                    {/* <PerformanceGraph 
+                    <PerformanceGraph 
                         portfolio={portfolio}
                         historicalData={this.props.historicalData}
-                    /> */}
+                    />
                 </div>
 
                 <div className='second-row'>

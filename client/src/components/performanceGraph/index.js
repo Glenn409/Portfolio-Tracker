@@ -161,44 +161,45 @@ class performanceGraph extends React.Component {
       }
 
       let balances = {}
-      timeFrame.map(time =>{
+
+      for(let i = 0; i < timeFrame.length; i++){
         let dataObj = {}
         let newObj = {}
-        transactions.map(transaction =>{
-          if(time === moment.unix(transaction.purchaseDate).format('MM/DD/YYYY')){
-            let coin = transaction.coin.toUpperCase()
-            for(let x = 0; x< this.props.historicalData[coin].length;x++){
-              if(moment.unix(this.props.historicalData[coin][x].time).format('MM/DD/YYYY') === moment.unix(transaction.purchaseDate).format('MM/DD/YYYY')){
-                let avg = (this.props.historicalData[coin][x].high + this.props.historicalData[coin][x].low) / 2
-                costBasis += (avg * transaction.quantity)
+        for(let y = 0; y < transactions.length; y++){
+          if(timeFrame[i] === moment.unix(transactions[y].purchaseDate).format('MM/DD/YYYY')){
+            let coin = transactions[y].coin.toUpperCase()
+            for(let x = 0; x < this.props.historicalData[coin].length;x++){
 
-                if(!quantity[`${transaction.coin}`]){
-                  quantity[`${transaction.coin}`] = 0
+              if(moment.unix(this.props.historicalData[coin][x].time).format('MM/DD/YYYY') === moment.unix(transactions[y].purchaseDate).format('MM/DD/YYYY')){
+                let avg = (this.props.historicalData[coin][x].high + this.props.historicalData[coin][x].low) / 2
+                costBasis += (avg * transactions[y].quantity)
+
+                if(!quantity[`${transactions[y].coin}`]){
+                  quantity[`${transactions[y].coin}`] = 0
                   
                 }
-                if(!balances[`${transaction.coin}`]){
-                  balances [`${transaction.coin}`] = 0
+                if(!balances[`${transactions[y].coin}`]){
+                  balances [`${transactions[y].coin}`] = 0
                 }
-                balances[`${transaction.coin}`] += parseFloat(avg * transaction.quantity)
-                quantity[`${transaction.coin}`] += parseFloat(transaction.quantity)
+                balances[`${transactions[y].coin}`] += parseFloat(avg * transactions[y].quantity)
+                quantity[`${transactions[y].coin}`] += parseFloat(transactions[y].quantity)
              } 
             }
           } else {
-            let coin = transaction.coin.toUpperCase()
+            let coin = transactions[y].coin.toUpperCase()
             for(let x = 0; x< this.props.historicalData[coin].length;x++){
-              if(moment.unix(this.props.historicalData[coin][x].time).format('MM/DD/YYYY') === time){
-                if(!balances[`${transaction.coin}`]){
-                  balances [`${transaction.coin}`] = 0
+              if(moment.unix(this.props.historicalData[coin][x].time).format('MM/DD/YYYY') === timeFrame[i]){
+                if(!balances[`${transactions[y].coin}`]){
+                  balances [`${transactions[y].coin}`] = 0
                 }
                 let avg = (this.props.historicalData[coin][x].high + this.props.historicalData[coin][x].low) / 2
-                balances[`${transaction.coin}`] = avg * quantity[`${transaction.coin}`]
+                balances[`${transactions[y].coin}`] = avg * quantity[`${transactions[y].coin}`]
               }
             }
           }
 
-        })
-
-        for (let [key, value] of Object.entries(quantity)) {
+        }
+                for (let [key, value] of Object.entries(quantity)) {
           newObj[`${key}`] = {
             quantity: value,
             balance: balances[`${key}`]
@@ -207,11 +208,11 @@ class performanceGraph extends React.Component {
         
         dataObj.costBasis = costBasis
         dataObj.portfolio = newObj
-        dataObj.date = time
+        dataObj.date = timeFrame[i]
 
         data.push(dataObj)
+      }
 
-      })
       this.setState({dailyPortfolio: data})
       data.map(data =>{
         this.state.graphData.labels.push(data.date)
@@ -221,42 +222,10 @@ class performanceGraph extends React.Component {
     }
 
     render() {
-      // console.log(this.state)
-      // console.log(this.props)
-      // console.log('-------')
+
       return (
         <div className='performgraph'>
           <div id='chartdiv'></div>
-          {/* <Line className ='test'
-            data={this.state.graphData}
-            options={{
-                
-              title:{
-                display:true,
-                text:'Portfolio performance',
-                fontSize:30,
-                fontColor: 'black'
-              },
-              scales:{
-                xAxes: [{
-                  ticks: {
-                    fontColor:'Black'
-                  }
-                }],
-                yAxes: [{
-                  ticks:{
-                    fontColor:'Black'
-                  }
-                }]
-              },
-              legend:{
-                display:false,
-                position:'right'
-              }, 
-              responsive: true,
-              maintainAspectRatio: false,
-            }}
-          /> */}
         </div>
       );
     }
