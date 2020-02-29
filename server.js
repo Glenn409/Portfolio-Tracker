@@ -37,10 +37,10 @@ if(process.env.NODE_ENV === 'test'){
     syncOptions.force = true
 }
 
-let task = cron.schedule('*/5 * * * * ',() => {
-    console.log('RUNNING CRON JOB')
-    routeTools.updatePrices() 
-})
+// let task = cron.schedule('*/5 * * * * ',() => {
+//     console.log('RUNNING CRON JOB')
+//     routeTools.updatePrices() 
+// })
 
 db.sequelize.sync(syncOptions).then(function(){
     app.listen(port, function() {
