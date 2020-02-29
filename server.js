@@ -22,24 +22,17 @@ app.use (session({
     saveUninitialized: false
 }))
 
-if( process.env.NODE_ENV === 'production'){
-    console.log('=========')
-    console.log('productions')
-    console.log('=========')
-    app.use(express.static(path.join(__dirname, 'client/build')));
-    
-    app.get("*", (req, res,err) => {
-        let url = path.join(__dirname, './client/build', 'index.html');
-        console.log(err)
-        // if (!url.startsWith('/app/')) // since we're on local windows
-        //   url = url.substring(1);
-        res.sendFile(url);
-      });
-                
-    }   
-            require('./routes/api')(app)
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+  } 
+require('./routes/api')(app)    
 let syncOptions = {force: false}
 
+if (process.env.NODE_ENV === 'production') {
+    app.get('*', (_, res) => {
+      res.sendFile(path.join(__dirname, '/client/build/index.html'));
+    });
+  }
 if(process.env.NODE_ENV === 'test'){
     syncOptions.force = true
 }
