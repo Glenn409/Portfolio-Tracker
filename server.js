@@ -30,7 +30,7 @@ let syncOptions = {force: false}
 
 if (process.env.NODE_ENV === 'production') {
     app.get('*', (_, res) => {
-      res.sendFile(path.join(__dirname, '/client/build/index.html'));
+      res.sendFile(path.join('./client/build/index.html'));
     });
   }
 if(process.env.NODE_ENV === 'test'){
