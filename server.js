@@ -16,10 +16,10 @@ const path = require('path')
 //     console.log('=========')
 //     console.log('productions')
 //     console.log('=========')
-//     app.use(express.static('client/build'));
-//     app.get('*', (request, response) => {
-//         response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-//     });
+    app.use(express.static('client/build'));
+    app.get('*', (request, response) => {
+        response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
 // }
 app.use(bodyParser.json())
 app.use( bodyParser.urlencoded({extended: false}))
