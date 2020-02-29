@@ -17,8 +17,13 @@ if( process.env.NODE_ENV === 'production'){
     console.log('productions')
     console.log('=========')
 
-    app.use(express.static('build'));
-    app.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html')));
+    app.get('/*', function(req, res) {
+        res.sendFile(path.join(__dirname, 'client\public\index.html'), function(err) {
+          if (err) {
+            res.status(500).send(err)
+          }
+        })
+      })
 }
 app.use(bodyParser.json())
 app.use( bodyParser.urlencoded({extended: false}))
