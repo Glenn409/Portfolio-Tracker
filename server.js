@@ -16,13 +16,10 @@ if( process.env.NODE_ENV === 'production'){
     console.log('=========')
     console.log('productions')
     console.log('=========')
-
-    app.get('/*', function(req, res) {
-        app.use(express.static(path.join(__dirname, "client", "build")))
-        res.sendFile(path.join(__dirname, "client", "build", "index.html"),function(err){
-            if(err){res.send(err)}
-        });
-      })
+    app.use(express.static('client/build'));
+    app.get('*', (request, response) => {
+        response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
 }
 app.use(bodyParser.json())
 app.use( bodyParser.urlencoded({extended: false}))
