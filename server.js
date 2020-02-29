@@ -31,8 +31,8 @@ if( process.env.NODE_ENV === 'production'){
     app.get("*", (req, res,err) => {
         let url = path.join(__dirname, './client/build', 'index.html');
         console.log(err)
-        if (!url.startsWith('/app/')) // since we're on local windows
-          url = url.substring(1);
+        // if (!url.startsWith('/app/')) // since we're on local windows
+        //   url = url.substring(1);
         res.sendFile(url);
       });
                 
