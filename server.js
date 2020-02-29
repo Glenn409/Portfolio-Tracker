@@ -1,4 +1,6 @@
-  
+let mysql = require('mysql');
+let connection = mysql.createConnection(process.env.JAWSDB_URL);
+connection.connect();  
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -8,7 +10,15 @@ const session = require('express-session')
 const app = express()
 const cron = require('node-cron')
 const routeTools = require('./routes/routeFunctions')
+const path = require('path')
 
+if( process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'))
+
+    app.get('*',(req,res) =>{
+        res.sendFile(path.resolve(__dirname, 'client','index.html'))
+    })
+}
 app.use(bodyParser.json())
 app.use( bodyParser.urlencoded({extended: false}))
 app.use(cors())
