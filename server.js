@@ -1,6 +1,6 @@
-// let mysql = require('mysql');
-// let connection = mysql.createConnection(process.env.JAWSDB_URL);
-// connection.connect();  
+let mysql = require('mysql');
+let connection = mysql.createConnection(process.env.JAWSDB_URL);
+connection.connect();  
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -12,15 +12,15 @@ const cron = require('node-cron')
 const routeTools = require('./routes/routeFunctions')
 const path = require('path')
 
-// if( process.env.NODE_ENV === 'production'){
-//     console.log('=========')
-//     console.log('productions')
-//     console.log('=========')
-//     app.use(express.static('client/build'));
-// }
-// app.get('*', (request, response) => {
-//     response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-// });
+if( process.env.NODE_ENV === 'production'){
+    console.log('=========')
+    console.log('productions')
+    console.log('=========')
+    app.use(express.static('client/build'));
+    app.get('*', (request, response) => {
+        response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
+}
 app.use(bodyParser.json())
 app.use( bodyParser.urlencoded({extended: false}))
 app.use(cors())
