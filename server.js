@@ -48,6 +48,6 @@ db.sequelize.sync(syncOptions).then(function(){
     app.listen(port, function() {
     console.log(`Server now listening on PORT ${port}!`)
     task.start()
-    routeTools.updatePrices()
+    // routeTools.updatePrices()
   })
 })      
