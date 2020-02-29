@@ -15,7 +15,7 @@
 }
 
 .second-row{
-    height:300px;
+    height:325px;
     display:flex;
     justify-content: space-around;
     align-items: center;
@@ -24,9 +24,9 @@
 }
 .donut-graph-container{
     display:flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: start;
     width:40%;
-    height: 250px;
     margin-left:auto;
 }
 .stats{
@@ -98,6 +98,29 @@
     color:grey;
 }
 .stats-title{
+    display:flex;
+    flex-direction: column;
     background-color:#344052;
     color:white;
+}
+.fixme{
+    font-size:25px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom:3px;
+}
+.small-title{
+    margin-top:0;
+    margin-bottom:0;
+    font-weight: normal;
+    font-size:16px;
+}
+.donut-title{
+    padding-top:15px;
+    padding-bottom:15px !important;
+    font-size:25px;
+    color:white;
+    background-color:#344052;
+    margin-bottom:0 !important;
 }

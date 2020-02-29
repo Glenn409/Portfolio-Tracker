@@ -6,7 +6,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { sort } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
+
 am4core.useTheme(am4themes_animated);
 
 class performanceGraph extends React.Component {
@@ -159,7 +159,7 @@ class performanceGraph extends React.Component {
           for(let x = 0; x< this.props.historicalData[coin].length;x++){
             if(moment.unix(this.props.historicalData[coin][x].time).format('MM/DD/YYYY') === moment.unix(transactions[i].purchaseDate).format('MM/DD/YYYY')){
               let avg = (this.props.historicalData[coin][x].high + this.props.historicalData[coin][x].low) / 2
-              costBasis += ( avg * parseInt(transactions[i].quantity))
+              costBasis += ( avg * parseFloat(transactions[i].quantity))
               if(!quantity[`${transactions[i].coin}`]){
                 quantity[`${transactions[i].coin}`] = 0
               }

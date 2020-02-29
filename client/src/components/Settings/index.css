@@ -17,7 +17,7 @@
 }
 .settings-content{
     margin-top:60px;
-    width:500px;
+    width:600px;
 }
 
 .settings-box{
@@ -59,6 +59,7 @@
     background-color:#303F9F;
 }
 .card-settings{
+    height:300px;
     padding-bottom:20px;
 }
 .settings-label{
@@ -67,7 +68,7 @@
     padding-right:5px;
 }
 .settings-name{
-    margin-left: 10px;
+    margin-left: 35px;
     margin-right:auto;
     width:200px;
     /* justify-content: center; */

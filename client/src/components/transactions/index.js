@@ -125,7 +125,9 @@ class Transactions extends React.Component{
                 }
                 this.setState({success:'true'})
                 this.setState({successMsg: 'Transaction Created!'})
+                console.log(newTransaction)
                createNewTransaction(newTransaction).then(res =>{
+                   console.log(res)
                    newTransaction.id = res.data.id
                    this.props.transactionChange(this.props.userId)
                    this.setState({recentTransaction: newTransaction})

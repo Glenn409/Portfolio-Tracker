@@ -74,7 +74,10 @@ class Portfolio extends React.Component{
                 <div className='second-row'>
                     <div className='card stats'>
                         <p className='title stats-title'> 
-                            <i className="material-icons stats-icon" onClick={e=> { e.preventDefault(); this.handleGraph('left')}}>arrow_back</i>{this.state.coinlist[this.state.graphIndex]}<i class="material-icons stats-icon" onClick={e=> { e.preventDefault();this.handleGraph('right')}}>arrow_forward</i>
+                            <div className='fixme'>
+                                <i className="material-icons stats-icon" onClick={e=> { e.preventDefault(); this.handleGraph('left')}}>arrow_back</i>{this.state.coinlist[this.state.graphIndex]}<i class="material-icons stats-icon" onClick={e=> { e.preventDefault();this.handleGraph('right')}}>arrow_forward</i>
+                            </div>
+                            <p className='small-title'>Monthly Market Value</p>
                         </p>
                         <StatsCard 
                             index={this.state.graphIndex}
@@ -85,6 +88,7 @@ class Portfolio extends React.Component{
                         />
                     </div>
                     <div className='donut-graph-container card'>
+                        <p className='title donut-title'>Portfolio Breakdown</p>
                         <DonutGraph
                             data={portfolio}
                         />

@@ -65,7 +65,7 @@ class donutGraph extends React.Component{
             currency: 'USD',
     });
         return(
-            <div className={'portfolio-card'}>
+            <div className='portfolio-card'>
                 <Pie
                     data={this.state.graphData}
                     options={{
@@ -83,7 +83,7 @@ class donutGraph extends React.Component{
                             2: {offsets:0.9}
                         },
                         title:{
-                            display:true,
+                            display:false,
                             text:'Portfolio Breakdown',
                             fontSize:25,
                             fontColor: '#333'
