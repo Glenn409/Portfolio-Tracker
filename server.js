@@ -29,7 +29,8 @@ if( process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'))
     
     app.get("*", (req, res,err) => {
-        let url = path.join(__dirname, '../client/build', 'index.html');
+        let url = path.join(__dirname, './client/build', 'index.html');
+        console.log(window.location.href )
         console.log(err)
         if (!url.startsWith('/app/')) // since we're on local windows
           url = url.substring(1);
