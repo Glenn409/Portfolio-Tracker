@@ -28,16 +28,16 @@ if( process.env.NODE_ENV === 'production'){
     console.log('=========')
     app.use(express.static('client/build'))
     
-    app.get('*', function(_, res) {
-            console.log(__dirname)
-          res.sendFile(path.join(__dirname, './client/build/public/index.html'), function(err) {
-                if (err) {
-                      res.status(500).send(err)
-                    }
-                  })
-                })
+    // app.get('*', function(_, res) {
+    //         console.log(__dirname)
+    //       res.sendFile(path.join(__dirname, './client/build/public/index.html'), function(err) {
+    //             if (err) {
+    //                   res.status(500).send(err)
+    //                 }
+    //               })
+    //             })
                 
-            }   
+    //         }   
             require('./routes/api')(app)
 let syncOptions = {force: false}
 
