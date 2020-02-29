@@ -29,7 +29,7 @@ class StatsCard extends React.Component{
                 this.setState({index: this.props.index})
                 this.createGraph()
             }
-        },100)
+        },200)
     }
     componentWillReceiveProps(prop){
 
