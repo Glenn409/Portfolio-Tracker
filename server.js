@@ -1,6 +1,6 @@
-// let mysql = require('mysql');
-// let connection = mysql.createConnection(process.env.JAWSDB_URL);
-// connection.connect();  
+let mysql = require('mysql');
+let connection = mysql.createConnection(process.env.JAWSDB_URL);
+connection.connect();  
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
