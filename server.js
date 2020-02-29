@@ -22,23 +22,23 @@ app.use (session({
     saveUninitialized: false
 }))
 
-require('./routes/api')(app)
 if( process.env.NODE_ENV === 'production'){
     console.log('=========')
     console.log('productions')
     console.log('=========')
-    app.use(express.static(path.join(__dirname, './client/build')))
-
-    app.get('*', function(_, res) {
-        console.log(__dirname)
-      res.sendFile(path.join(__dirname, './client/build/public/index.html'), function(err) {
-        if (err) {
-          res.status(500).send(err)
-        }
-      })
-    })
+    app.use(express.static('client/build')))
     
-}   
+    // app.get('*', function(_, res) {
+        //     console.log(__dirname)
+        //   res.sendFile(path.join(__dirname, './client/build/public/index.html'), function(err) {
+            //     if (err) {
+                //       res.status(500).send(err)
+                //     }
+                //   })
+                // })
+                
+            }   
+            require('./routes/api')(app)
 let syncOptions = {force: false}
 
 if(process.env.NODE_ENV === 'test'){
