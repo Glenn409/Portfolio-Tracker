@@ -9,8 +9,12 @@ class Portfolio extends React.Component{
         super(props);
         this.state = {
             loading: true,
-            portfolio: {}
+            portfolio: {},
+            graphIndex:0,
+            graphData: [],
+            coinlist: []
         }
+        this.handleGraph = this.handleGraph.bind(this)
     }
     componentDidMount(){
         this.timer = setInterval(() =>{
@@ -18,13 +22,27 @@ class Portfolio extends React.Component{
                 clearInterval(this.timer)
                 this.timer=null
                 this.setState({portfolio: this.props.portfolio}) 
+                this.setState({graphData: this.props.thirtyDayGraphData})
+                this.setState({coinlist:  Object.keys(this.state.graphData)})
                 this.setState({loading:false})
             }
         },75)
     }
 
+    handleGraph(direction){
+        // console.log(this.state.coinlist)
+
+        if(direction === 'left'){
+            if(this.state.graphIndex !== 0){
+                this.setState({graphIndex: this.state.graphIndex - 1})
+            }
+        } else if(direction ==='right'){
+            if(this.state.graphIndex !== this.state.coinlist.length -1){
+                this.setState({graphIndex: this.state.graphIndex + 1}) 
+         }
+        }
+    }
     render(){
-        // console.log(this.props)
         //change integers into money format
         const formatter = new Intl.NumberFormat('en-US', {
                 style: 'currency',
@@ -55,8 +73,15 @@ class Portfolio extends React.Component{
 
                 <div className='second-row'>
                     <div className='card stats'>
+                        <p className='title stats-title'> 
+                            <i className="material-icons stats-icon" onClick={e=> { e.preventDefault(); this.handleGraph('left')}}>arrow_back</i>{this.state.coinlist[this.state.graphIndex]}<i class="material-icons stats-icon" onClick={e=> { e.preventDefault();this.handleGraph('right')}}>arrow_forward</i>
+                        </p>
                         <StatsCard 
+                            index={this.state.graphIndex}
                             portfolio={portfolio}
+                            coin={this.state.coinlist[this.state.graphIndex]}
+                            graphData={this.props.thirtyDayGraphData}
+
                         />
                     </div>
                     <div className='donut-graph-container card'>

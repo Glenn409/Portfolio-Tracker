@@ -66,6 +66,7 @@ class signUpPage extends React.Component{
             this.state.repeatedPasswordTest === 'Passed'
         ){
             axios.post('/api/signup',{
+                name: this.state.name,
                 email: this.state.email,
                 password: this.state.password
             }).then(res =>{

@@ -1,7 +1,82 @@
-/* .settings-container{
+.settings-container{
+    width:100%;
+    overflow: auto;
     display:flex;
-    flex-direction: column;
-    width:90%;
-    margin-left:auto;
+    justify-content: center;
+}
+.settings-content p{
+    font-size:18px;
+}
+.settings-title{
+    text-align: center;
+    padding-top:15px;
+    padding-bottom:15px;
+    background-color:#344052;
+    color:white;
+    font-size:20px;
+}
+.settings-content{
+    margin-top:60px;
+    width:500px;
+}
+
+.settings-box{
+    margin-left: auto;
     margin-right:auto;
-} */
+    width:200px;
+    /* justify-content: center; */
+    display:flex;
+    padding-left:15px;
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-right:15px;
+    align-items: center;
+    height:50px;
+}
+.settings-box p{
+    margin-top:0;
+    margin-bottom:0;
+    padding-right:5px;
+}
+.settings-box-container{
+    width:300px;
+}
+.settings-button-box{
+    display:flex;
+}
+
+.settings-box button{
+    margin-left:auto;
+    cursor:pointer;
+    background-color:#3f51b5;
+    color:white;
+    border-radius: 5px;
+    padding-top:5px;
+    padding-bottom:5px;
+    width:150px;
+}
+.settings-box button:hover{
+    background-color:#303F9F;
+}
+.card-settings{
+    padding-bottom:20px;
+}
+.settings-label{
+    font-size:18px;
+    font-weight: bold;
+    padding-right:5px;
+}
+.settings-name{
+    margin-left: 10px;
+    margin-right:auto;
+    width:200px;
+    /* justify-content: center; */
+    display:flex;
+    padding-left:15px;
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-right:15px;
+    justify-content: left;
+    align-items: center;
+    height:50px;
+}

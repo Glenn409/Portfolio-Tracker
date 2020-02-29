@@ -131,7 +131,6 @@ module.exports = {
         let dis = this //cant call getPriceValues unless giving this a variable
         let usdValue = 0
         let btcValue = 0
-
         dis.transactionsAndQuantity(id, function(data){
             if(data.data === false){
                 cb({portfolio:false})
@@ -149,7 +148,6 @@ module.exports = {
                     for(let x = 0; x < coinInfo.length;x++){
                         Object.keys(coinInfo[x]).map(function(key,index){
                             if(coinKeys[i].toUpperCase() === coinInfo[x][key]){
-                                console.log(coinInfo[x])
                                 coinInfo[x].quantity = quantity[i]
                                 coinInfo[x].coinUSDBalance = quantity[i] * coinInfo[x][`usdprice`]
                                 usdValue += coinInfo[x].coinUSDBalance
@@ -170,6 +168,7 @@ module.exports = {
     },
 
     async getHistoricalData(obj,cb){
+
         // if(obj.portfolio === false){
         //     cb({portfolio:false})
         // }
@@ -180,7 +179,9 @@ module.exports = {
         let returnObj = obj
         let coinList = []
         let queryList = []
+        let setQueryList = []
         returnObj.historicalData = {}
+        returnObj.thirtyDayGraphData = {}
 
         const userCoins = Object.keys(obj.portfolio.quantity)
         for(let i = 0; i < userCoins.length; i++){
@@ -196,30 +197,47 @@ module.exports = {
                     } else {
                         transactionList.push(moment(obj.portfolio.transactions[i].purchaseDate, 'X'))
                     }
-
                 }
             }
             let farthestDate = moment.min(transactionList)
             let day = moment().diff(farthestDate,'days')
             let query = url+coinList[x]+params1+day+params2
             queryList.push(query)
+
+            let query2 = url+coinList[x]+params1+'30'+params2
+            setQueryList.push(query2)
         }
+
         let dataArray = []
+        let dataArray2 = []
         for(let i = 0; i < queryList.length;i++){
             dataArray.push(this.getData(queryList[i]))
         }
-
+        for(let i = 0; i < queryList.length;i++){
+            dataArray2.push(this.getData(setQueryList[i]))
+        }
         Promise.all(dataArray).then(() =>{
-            for(let i = 0; i < dataArray.length; i++){
-                returnObj.historicalData[coinList[i]] = []
-                Promise.resolve(dataArray[i]).then(res =>{
-                    returnObj.historicalData[coinList[i]] = res
-                })
-            }
-    
-        })
-        .then(() =>{
-            cb({data: returnObj})
+                for(let i = 0; i < dataArray.length; i++){
+                    returnObj.historicalData[coinList[i]] = []
+                    Promise.resolve(dataArray[i]).then(res =>{
+                        returnObj.historicalData[coinList[i]] = res
+                    })
+                }
+        }).then(()=>{
+            Promise.all(dataArray2).then(() =>{
+                for(let i = 0; i < dataArray2.length; i++){
+                    returnObj.thirtyDayGraphData[coinList[i]] = []
+                    Promise.resolve(dataArray2[i]).then(res =>{
+                        // console.log(res)
+                        returnObj.thirtyDayGraphData[coinList[i]] = res
+                    })
+                    // console.log(returnObj)
+
+                }
+
+            }).then(()=>{
+               cb({data:returnObj})
+            })
         })
     
     },
@@ -261,6 +279,61 @@ module.exports = {
             }
         }).then(res =>{
             cb({response: 'success'})
+        })
+    },
+
+    getAccountInfo(id,cb){
+        db.User.findOne({
+            where: id.user
+        }).then(res =>{
+            cb({
+                name:res.dataValues.name,
+                email: res.dataValues.email
+            })
+        })
+    },
+
+    updateEmail(user,cb) {
+        db.User.findOne({
+            where: { email: user.user.email}
+        }).then(res =>{
+            if(res === null){
+                db.User.findOne({
+                    where: {id: user.user.id}
+                }).then(response =>{
+                    if(bcrypt.compareSync(user.user.password, response.dataValues.password)){
+                        db.User.update(
+                            {email: user.user.email},
+                            {where: {id: user.user.id,}}
+                        )
+                        .then(res =>{
+                            cb({success:'User Updated',
+                                email: user.user.email})
+                        })
+                    } else {
+                        cb({passwordError: 'Password Incorrect!'})
+                    }
+                })
+            } else  {
+                cb({emailError:'Email Already Taken!'})
+            }
+        })
+    },
+
+    updatePW(user,cb){
+        db.User.findOne({
+            where: {id: user.user.id}
+        }).then(res =>{
+            if(bcrypt.compareSync(user.user.oldPassword, res.dataValues.password)){
+                db.User.update(
+                    {password: bcrypt.hashSync(user.user.newPassword, bcrypt.genSaltSync(10), null)},
+                    {where: {id: user.user.id}}
+                ).then(()=>{
+                    cb({success:'Updated Password'})
+                })
+            } else {
+                cb({error: 'Incorrect Password'})
+            }
         })
     }
 }

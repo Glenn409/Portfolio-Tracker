@@ -42,7 +42,7 @@ class performanceGraph extends React.Component {
 
           let data = [];
           //sets up porfolio balance in main graph
-          console.log(this.state)
+          // console.log(this.state)
           let arrayOfDailyBalance = []
           for(let i = 0; i < this.state.dailyPortfolio.length ; i++){
             const userCoins = Object.keys(this.state.dailyPortfolio[i].portfolio)
@@ -55,12 +55,11 @@ class performanceGraph extends React.Component {
           }
           arrayOfDailyBalance.push(this.state.portfolio.balance.usd)
 
-
+          // console.log(this.state.graphData.labels)
           for (let i = 0; i < this.state.graphData.labels.length; i++) {
             data.push({ date: this.state.graphData.labels[i], value: this.state.graphData.datasets[0].data[i].toFixed(0),value2: arrayOfDailyBalance[i].toFixed(2)})
           }
           chart.data = data;
-          
           let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
           dateAxis.renderer.grid.template.location = 0;
           dateAxis.renderer.grid.template.disabled = true;

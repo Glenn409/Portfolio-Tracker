@@ -20,6 +20,7 @@ class Dashboard extends React.Component{
             userId: '',
             portfolio: {},
             historicalData: {},
+            thirtyDayGraphData: {},
             index: 0
         }
         this.onTransactionChange = this.onTransactionChange.bind(this)
@@ -39,6 +40,7 @@ class Dashboard extends React.Component{
             } else {
                 this.setState({portfolio: res.data.data.portfolio})
                 this.setState({historicalData: res.data.data.historicalData})
+                this.setState({graphData: res.data.data.thirtyDayGraphData})
                 this.setState({loaded:true})
 
             }
@@ -51,13 +53,14 @@ class Dashboard extends React.Component{
             } else {
                 this.setState({portfolio: res.data.data.portfolio})
                 this.setState({historicalData: res.data.data.historicalData})
+                this.setState({graphData: res.data.data.thirtyDayGraphData})
             }
         })
     }
     changeIndex(num){
         this.setState({index: num})
     }
-    render(){
+    render(){   
         let havePortfolio = <p></p>;
         if(!this.state.loaded){
             havePortfolio = <div className='container'>
@@ -80,7 +83,9 @@ class Dashboard extends React.Component{
                                         />
                                     </Route>
                                     <Route path='/dashboard/settings'>    
-                                        <Settings />
+                                        <Settings 
+                                            userId={this.state.userId}
+                                        />
                                     </Route>
                                     <Route path='/dashboard/transactions'>    
                                         <Transactions 
@@ -103,10 +108,13 @@ class Dashboard extends React.Component{
                                         <Portfolio 
                                             portfolio={this.state.portfolio}
                                             historicalData={this.state.historicalData}
+                                            thirtyDayGraphData={this.state.graphData}
                                         />
                                     </Route>
                                     <Route path='/dashboard/settings'>    
-                                        <Settings />
+                                        <Settings 
+                                         userId={this.state.userId}
+                                        />
                                     </Route>
                                     <Route path='/dashboard/transactions'>    
                                         <Transactions transactionChange = {this.onTransactionChange}

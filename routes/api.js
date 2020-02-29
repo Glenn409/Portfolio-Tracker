@@ -16,17 +16,15 @@ module.exports = app => {
     //signup
     app.post("/api/signup",(req,res) =>{
         const newUser = {
+            name:req.body.name,
             email: req.body.email,
             password: req.body.password
         }
         routeTools.signUp(newUser, function(data){
             if(data.error){
-                console.log(`error: ${data.error}`)
                 res.send({res: data})
             } else {
-                console.log('success logging in now')
                 routeTools.login(newUser,function(data){
-                    console.log(`after login: ${JSON.stringify(data)}`)
                     res.send({success:data})
                 })
             }
@@ -39,8 +37,8 @@ module.exports = app => {
                 res.json({portfolio:false})
             } else {
                 routeTools.getHistoricalData(data, function(historicalData){
-                        res.json({data:data})
-                   })
+                        res.send({data:data})
+                    })
                 }
             })
         })
@@ -64,6 +62,21 @@ module.exports = app => {
 
     app.delete('/api/deleteTransaction',(req,res) =>{
         routeTools.deleteTransaction(req.body.id, function(data){
+            res.send(data)
+        })
+    })
+    app.post('/api/getAccountInfo',(req,res) =>{
+        routeTools.getAccountInfo(req.body, function(data){
+            res.send(data)
+        })
+    })
+    app.put('/api/updateEmail', (req,res) =>{
+        routeTools.updateEmail(req.body,function(data){
+            res.send(data)
+        })
+    })
+    app.put('/api/updatePW',(req,res) => {
+        routeTools.updatePW(req.body,function(data){
             res.send(data)
         })
     })

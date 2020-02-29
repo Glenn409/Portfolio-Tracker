@@ -74,8 +74,7 @@ class donutGraph extends React.Component{
                                 label: function(tooltipItem,data){
                                     let value = data.datasets[0].data[tooltipItem.index]
                                     return data.labels[tooltipItem.index] + ": " + formatter.format(value)
-                                }
-
+                                },
                             }
                         },
                         responsive:true,
@@ -93,6 +92,10 @@ class donutGraph extends React.Component{
                             display:true,
                             position:'right',
                             fontSize:18,
+                            labels: {
+                                fontSize:18,
+                                fontFamily:'Source Sans Pro',
+                            }
                         },
                         pieceLabel: {
                             render: 'percentage',
@@ -100,7 +103,7 @@ class donutGraph extends React.Component{
                             fontSize: 18,
                             showActualPercentages: true,
                             fontFamily:'Source Sans Pro',
-                            textMargin:5,
+                            textMargin:8,
                             segment:true,
                          },
                     }}

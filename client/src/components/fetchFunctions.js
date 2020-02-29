@@ -38,3 +38,27 @@ export const deleteTransaction = (id) =>{
         return ({response: res.data})
     })
 }
+export const getAccountInfo = (id) =>{
+    console.log(id)
+    return axios.post(`/api/getAccountInfo`,{
+            user: id
+        }).then(res =>{
+            return({data:res.data})
+        })
+}
+
+export const updateEmail = (user) =>{
+    return axios.put('/api/updateEmail',{
+        user:user
+    }).then(res =>{
+        return({data: res.data})
+    })
+}
+
+export const updatePW = (user) =>{
+    return axios.put('/api/updatePW',{
+        user:user
+    }).then(res =>{
+        return({data:res.data})
+    })
+}
