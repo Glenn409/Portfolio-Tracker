@@ -12,7 +12,7 @@ const cron = require('node-cron')
 const routeTools = require('./routes/routeFunctions')
 const path = require('path');
 const dirTree = require("directory-tree");
-const tree = dirTree(__dirname);
+const tree = dirTree(path.join(__dirname, 'client/build'));
 
 app.use(bodyParser.json())
 app.use( bodyParser.urlencoded({extended: false}))
