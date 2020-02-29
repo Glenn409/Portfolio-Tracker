@@ -10,8 +10,9 @@ const session = require('express-session')
 const app = express()
 const cron = require('node-cron')
 const routeTools = require('./routes/routeFunctions')
-const path = require('path')
-
+const path = require('path');
+const dirTree = require("directory-tree");
+const tree = dirTree(__dirname);
 
 app.use(bodyParser.json())
 app.use( bodyParser.urlencoded({extended: false}))
@@ -29,8 +30,8 @@ require('./routes/api')(app)
 let syncOptions = {force: false}
 
 if (process.env.NODE_ENV === 'production') {
+    console.log(tree);
     app.get('*', (_, res) => {
-        console.log(path.join(__dirname, 'client/build/index.html'))
       res.sendFile(path.join(__dirname, 'client/build/index.html'));
     });
     
