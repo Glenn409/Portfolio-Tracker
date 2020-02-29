@@ -28,16 +28,14 @@ if( process.env.NODE_ENV === 'production'){
     console.log('=========')
     app.use(express.static('client/build'))
     
-    // app.get('*', function(_, res) {
-    //         console.log(__dirname)
-    //       res.sendFile(path.join(__dirname, './client/build/public/index.html'), function(err) {
-    //             if (err) {
-    //                   res.status(500).send(err)
-    //                 }
-    //               })
-    //             })
+    app.get("*", (req, res) => {
+        let url = path.join(__dirname, '../client/build', 'index.html');
+        if (!url.startsWith('/app/')) // since we're on local windows
+          url = url.substring(1);
+        res.sendFile(url);
+      });
                 
-            }   
+    }   
             require('./routes/api')(app)
 let syncOptions = {force: false}
 
