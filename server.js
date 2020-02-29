@@ -37,7 +37,7 @@ if( process.env.NODE_ENV === 'production'){
     //               })
     //             })
                 
-    //         }   
+            }   
             require('./routes/api')(app)
 let syncOptions = {force: false}
 
