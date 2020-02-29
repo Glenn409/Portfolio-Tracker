@@ -14,18 +14,16 @@ INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('TRX', 'Tron',0
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('ETC', 'Ethereum Classic',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('DASH', 'Dash',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('NEO', 'Neo',0,NOW(),NOW());
-INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('IOTA', 'MIOTA',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('ZEC', 'Zcash',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('XEM', 'NEM',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('ONT', 'Ontology',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('VET', 'Vechain',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('BAT', 'Basic Attention Token',0,NOW(),NOW());
-INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('DOGE', 'Dogecoin',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('QTUM', 'Qtum',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('ICX', 'ICON',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('DCR', 'Decred',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('ZRX', '0x',0,NOW(),NOW());
-INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('LLSK', 'Lisk',0,NOW(),NOW());
+INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('LSK', 'Lisk',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('RVN', 'Ravencoin',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('BTG', 'Bitcoin Gold',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('REP', 'Augur',0,NOW(),NOW());
@@ -33,8 +31,7 @@ INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('OMG', 'OmiseGO
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('WAVES', 'WAVES',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('NANO', 'Nano',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('ENJ', 'Enjin Coin',0,NOW(),NOW());
-INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('BCN', 'Bytecoin',0,NOW(),NOW());
-INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('XVG', 'Verge',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('ZIL', 'Zilliqa',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('ELF', 'aelf',0,NOW(),NOW());
 INSERT INTO Coins (symbol,name,sort,createdAt,updatedAt) VALUES ('XZC', 'Zcoin',0,NOW(),NOW());
+    

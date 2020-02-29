@@ -15,6 +15,7 @@ module.exports = app => {
     })  
     //signup
     app.post("/api/signup",(req,res) =>{
+        console.log(req.body)
         const newUser = {
             name:req.body.name,
             email: req.body.email,
