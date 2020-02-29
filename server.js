@@ -13,6 +13,10 @@ const routeTools = require('./routes/routeFunctions')
 const path = require('path')
 
 if( process.env.NODE_ENV === 'production'){
+    console.log('=========')
+    console.log('productions')
+    console.log('=========')
+
     app.use(express.static('build'));
     app.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html')));
 }
