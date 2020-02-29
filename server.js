@@ -26,7 +26,7 @@ if( process.env.NODE_ENV === 'production'){
     console.log('=========')
     console.log('productions')
     console.log('=========')
-    app.use(express.static('client/build')))
+    app.use(express.static('client/build'))
     
     // app.get('*', function(_, res) {
         //     console.log(__dirname)
