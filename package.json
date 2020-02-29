@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/Glenn409/Portfolio-Tracker/issues"
   },
-  "homepage": "https://github.com/Glenn409/Portfolio-Tracker#readme",
+  "homepage": ".",
   "dependencies": {
     "@material-ui/core": "^4.9.4",
     "axios": "^0.19.2",
